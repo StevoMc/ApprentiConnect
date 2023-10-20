@@ -2,7 +2,7 @@
 import { ImageResponse } from "next/server";
 
 export const runtime = "edge";
-export const alt = "Precedent - Building blocks for your Next.js project";
+export const alt = "ApprentiConnect project";
 export const contentType = "image/png";
 
 export default async function OG() {
@@ -26,8 +26,8 @@ export default async function OG() {
         }}
       >
         <img
-          src={`https://${process.env.VERCEL_URL || "precedent.dev"}/logo.png`}
-          alt="Precedent Logo"
+          src={`https://${process.env.BASE_URL || "fs223.de"}/logo.png`}
+          alt="ApprentiConnect Logo"
           tw="w-20 h-20 mb-4 opacity-95"
         />
         <h1

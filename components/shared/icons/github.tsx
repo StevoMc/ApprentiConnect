@@ -4,7 +4,7 @@ export default function Github({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       width="20"
       height="20"
-      fill="currentColor"
+      // fill="hsl(var(--foreground))"
       viewBox="0 0 24 24"
       className={className}
     >
