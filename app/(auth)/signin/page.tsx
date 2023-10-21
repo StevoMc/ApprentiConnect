@@ -71,36 +71,33 @@ export const SignInCard = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // console.log(`POSTing ${JSON.stringify(body, null, 2)}`);
+    console.log(`POSTing ${JSON.stringify(values, null, 2)}`);
     await signIn("credentials", {
       ...values,
-    })
-      .then((res) => {
-        console.log(res);
-        toast.success("Login successful", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        form.reset();
-        router.push(`/`);
-      })
-      .catch((e) => {
-        toast.error(`${"SIGNIN"}: ${e}`, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        handleFormFieldPasswordReset(values);
+    }).catch((e) => {
+      console.log(e);
+      toast.error(`${"SIGNIN"}: ${e}`, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       });
+      handleFormFieldPasswordReset(values);
+    });
+    toast.success("Login successful", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    // form.reset();
+    // router.push(`/`);
   };
 
   const handleFormFieldPasswordReset = (values: z.infer<typeof formSchema>) => {
@@ -207,7 +204,7 @@ export const SignInCard = () => {
             <p>or</p>
             <Button
               onClick={() => {
-                router.push("/auth/signup");
+                router.push("/signup");
               }}
               variant={"outline"}
               className="w-full"

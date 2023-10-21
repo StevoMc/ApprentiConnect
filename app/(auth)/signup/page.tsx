@@ -72,12 +72,23 @@ export const SignUpCard = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await signIn("credentials", values);
+      // const response = await signIn("credentials", values);
+
+      const response = await axios.post("/api/auth/register", {
+          firstname: values.firstname,
+          lastname: values.lastname,
+          email: values.email,
+          password: values.password,
+        })
+        .catch((e) => {
+          console.error(e);
+          return e;
+        });
 
       console.log(response);
 
       if (response instanceof AxiosError) {
-        toast.error(`${response.name}: ${response.message}`, {
+        toast.error(`${response.name}: ${response.response?.data?.error}`, {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 2000,
           hideProgressBar: true,
@@ -150,7 +161,7 @@ export const SignUpCard = () => {
                         <FormControl>
                           <Input
                             disabled={isLoading}
-                            className="bg-[--card]/20 border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0"
+                            className="border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
                             placeholder="Enter Your First Name"
                             {...field}
                           />
@@ -172,7 +183,7 @@ export const SignUpCard = () => {
                         <FormControl>
                           <Input
                             disabled={isLoading}
-                            className="bg-[--card]/20 border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0"
+                            className="border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
                             placeholder="Enter Your Last Name"
                             {...field}
                           />
@@ -195,7 +206,7 @@ export const SignUpCard = () => {
                       <FormControl>
                         <Input
                           disabled={isLoading}
-                          className="bg-[--card]/20 border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0"
+                          className="border-0 text-card-foreground focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
                           placeholder="Enter Your E-Mail"
                           {...field}
                         />
@@ -218,7 +229,7 @@ export const SignUpCard = () => {
                         <Input
                           disabled={isLoading}
                           type="password"
-                          className="bg-[--card]/20 border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0"
+                          className="border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
                           placeholder="Enter Password"
                           {...field}
                         />
@@ -242,7 +253,7 @@ export const SignUpCard = () => {
             <p>or</p>
             <Button
               onClick={() => {
-                router.push("/auth/signin");
+                router.push("/signin");
               }}
               variant={"outline"}
               className="w-full"

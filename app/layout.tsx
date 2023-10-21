@@ -4,10 +4,9 @@ import { sfPro, inter } from "./fonts";
 import Nav from "components/layout/nav";
 import Footer from "components/layout/footer";
 import { Suspense } from "react";
-import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "components/providers/theme-provider";
 import { ToastContainer } from "react-toastify";
-
+import AuthStatus from "@/components/auth-status";
 import { cn } from "@/lib/utils";
 
 export const metadata = {
@@ -61,9 +60,10 @@ export default async function RootLayout({
           storageKey="theme"
         >
           <ToastContainer theme="dark" />
-          <div className="background fixed h-screen w-full" />
+          <div className="background fixed h-screen w-full z-[-10]" />
           {/*  */}
-          <Suspense fallback="...">
+          <Suspense fallback="Loading...">
+            <AuthStatus />
             <Nav />
           </Suspense>
           <main className="z-[-1] flex min-h-screen w-full flex-col items-center justify-center py-32">

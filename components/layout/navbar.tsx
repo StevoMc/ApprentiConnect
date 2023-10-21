@@ -24,14 +24,14 @@ export default function NavBar({ session }: { session: Session | null }) {
         } z-30`}
       >
         <div className="mx-5 flex h-16 w-full max-w-screen-xl items-center justify-between">
-          <Link href="/" className="font-display flex items-center text-2xl">
+          <Link href="/" className="flex items-center font-display text-2xl">
             <Image
               src="/logo.png"
               alt="Logo"
               width="30"
               height="30"
               className="mr-2 rounded-sm"
-            ></Image>
+            />
             <p>ApprentiConnect</p>
           </Link>
           <div className="z-40 ml-auto mr-2">
