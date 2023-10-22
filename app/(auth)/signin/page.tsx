@@ -96,8 +96,8 @@ export const SignInCard = () => {
       draggable: true,
       progress: undefined,
     });
-    // form.reset();
-    // router.push(`/`);
+    form.reset();
+    router.push(`/`);
   };
 
   const handleFormFieldPasswordReset = (values: z.infer<typeof formSchema>) => {
