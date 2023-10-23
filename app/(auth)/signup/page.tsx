@@ -56,7 +56,7 @@ const formSchema = z.object({
     .min(6, { message: "Password must be atleast 6 characters" }),
 });
 
-export const SignUpCard = () => {
+export default function SignUpCard() {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -74,7 +74,8 @@ export const SignUpCard = () => {
     try {
       // const response = await signIn("credentials", values);
 
-      const response = await axios.post("/api/auth/register", {
+      const response = await axios
+        .post("/api/auth/register", {
           firstname: values.firstname,
           lastname: values.lastname,
           email: values.email,
@@ -265,6 +266,4 @@ export const SignUpCard = () => {
       </Card>
     </>
   );
-};
-
-export default SignUpCard;
+}
