@@ -27,8 +27,6 @@ services:
       - 3000:3000
     networks:
       - net
-    env_file:
-      - .env
     depends_on:
       - postgres
 
