@@ -43,8 +43,6 @@ import { ModeToggle } from "@/components/shared/mode-toggle";
 import { Separator } from "@/components/ui/separator";
 import { signIn } from "next-auth/react";
 
-import "../style.module.css";
-
 // import { ActionTooltip } from "@/components/action-tooltip";
 // import { Button } from "@/components/ui/button";
 // import { PenBox } from "lucide-react";
@@ -58,7 +56,7 @@ const formSchema = z.object({
   }),
 });
 
-export const SignInCard = () => {
+export default function SignInCard() {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -71,7 +69,7 @@ export const SignInCard = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(`POSTing ${JSON.stringify(values, null, 2)}`);
+    // console.log(`POSTing ${JSON.stringify(values, null, 2)}`);
     await signIn("credentials", {
       ...values,
     }).catch((e) => {
@@ -216,6 +214,4 @@ export const SignInCard = () => {
       </Card>
     </>
   );
-};
-
-export default SignInCard;
+}
