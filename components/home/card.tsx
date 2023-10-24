@@ -23,7 +23,7 @@ export default function Card({
         <h2 className="to-forground/60 bg-gradient-to-br from-foreground/90 bg-clip-text font-display text-xl font-bold [text-wrap:balance] md:text-3xl md:font-normal">
           {title}
         </h2>
-        <div className="prose-sm md:prose mt-3 leading-normal text-foreground/70 [text-wrap:balance]">
+        <div className="prose-sm mt-3 leading-normal text-foreground/70 [text-wrap:balance] md:prose">
           <ReactMarkdown
             components={{
               a: ({ node, ...props }) => (

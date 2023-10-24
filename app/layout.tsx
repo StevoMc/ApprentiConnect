@@ -14,7 +14,7 @@ export const metadata = {
   description:
     "ApprentiConnect: Connecting apprentices with mentors for career guidance and knowledge sharing.",
   metadataBase: new URL("https://fs223.de"),
-  // themeColor: "#FFF",
+  themeColor: "#FFF",
 };
 
 export default async function RootLayout({
@@ -23,7 +23,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="scroll-smooth"
+      style={{ scrollBehavior: "smooth" }}
+    >
       <head>
         <link
           rel="apple-touch-icon"
@@ -60,7 +65,7 @@ export default async function RootLayout({
           storageKey="theme"
         >
           <ToastContainer theme="dark" />
-          <div className="background fixed h-screen w-full z-[-10]" />
+          <div className="background fixed z-[-10] h-screen w-full" />
           {/*  */}
           <Suspense fallback="Loading...">
             <AuthStatus />

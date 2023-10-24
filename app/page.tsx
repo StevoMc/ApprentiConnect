@@ -17,7 +17,7 @@ export default async function Home() {
             alt="Logo"
             width="400"
             height="400"
-            className="space-x-2 rounded-sm border-0 mb-[-130px] mt-[-30px]"
+            className="mb-[-130px] mt-[-30px] space-x-2 rounded-sm border-0"
           />
         </div>
 
@@ -98,7 +98,9 @@ const features = [
     description: "Manage your Reports",
     demo: (
       <>
-        <ReportIcon />
+        <a href="/reports">
+          <ReportIcon />
+        </a>
       </>
     ),
   },
@@ -123,14 +125,19 @@ const features = [
     description: "View all reports",
     demo: (
       <>
-        <Image
-          alt=""
-          height="100"
-          width="100"
-          src={
-            "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
-          }
-        />
+        <a
+          className="flex h-full w-full items-center justify-center"
+          href="/dashboard"
+        >
+          <Image
+            alt=""
+            height="100"
+            width="100"
+            src={
+              "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
+            }
+          />
+        </a>
       </>
     ),
   },

@@ -70,11 +70,15 @@ export default function SignInCard() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // console.log(`POSTing ${JSON.stringify(values, null, 2)}`);
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
+      redirect: false,
       ...values,
     }).catch((e) => {
       console.log(e);
-      toast.error(`${"SIGNIN"}: ${e}`, {
+    });
+
+    if (!result?.ok) {
+      toast.error(`Invalid username or password`, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
         hideProgressBar: true,
@@ -84,7 +88,8 @@ export default function SignInCard() {
         progress: undefined,
       });
       handleFormFieldPasswordReset(values);
-    });
+      return;
+    }
     toast.success("Login successful", {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 2000,
@@ -95,7 +100,8 @@ export default function SignInCard() {
       progress: undefined,
     });
     form.reset();
-    router.push(`/`);
+    router.refresh();
+    router.push("/");
   };
 
   const handleFormFieldPasswordReset = (values: z.infer<typeof formSchema>) => {

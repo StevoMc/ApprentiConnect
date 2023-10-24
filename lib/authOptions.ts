@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
@@ -19,7 +19,8 @@ export const authOptions: NextAuthOptions = {
       authorize: async (credentials, req) => {
         const { email, password } = credentials ?? {};
         if (!email || !password) {
-          throw new Error("Missing username or password");
+          // throw new Error("Missing username or password");
+          return null;
         }
 
         const body = Object.entries(credentials || {})
@@ -31,10 +32,12 @@ export const authOptions: NextAuthOptions = {
             email: email.toLowerCase(),
           },
         });
-        if (!user?.password) throw new Error("Invalid username or password");
+        if (!user?.password) return null;
+        // throw new Error("Invalid username or password");
 
         if (!(await compare(password, user?.password))) {
-          throw new Error("Invalid username or password");
+          return null;
+          // throw new Error("Invalid username or password");
         }
         return user;
       },
@@ -46,7 +49,7 @@ export const authOptions: NextAuthOptions = {
     signOut: "/signout",
     newUser: "/signup",
   },
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   logger: {
     error: (code, metadata) => {
       logger.error(code, metadata);
