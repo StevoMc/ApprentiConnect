@@ -14,6 +14,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     restart: always
+    env_file:
+      - stack.env
     networks:
       - net
 
@@ -28,6 +30,8 @@ services:
       - 3000:3000
     networks:
       - net
+    env_file:
+      - stack.env
     depends_on:
       - postgres
 
