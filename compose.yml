@@ -5,6 +5,7 @@ services:
     container_name: postgres
     hostname: postgres
     image: postgres:16-alpine
+    network_mode: bridge
     ports:
       - ${POSTGRES_PORT}:5432
     volumes:
@@ -16,10 +17,6 @@ services:
     restart: always
     env_file:
       - .env
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    networks:
-      - net
 
   nextjs:
     container_name: nextjs
@@ -28,21 +25,13 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    network_mode: bridge
     ports:
       - 3000:3000
-    networks:
-      - net
     env_file:
       - .env
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
-
-networks:
-  net:
-    driver: bridge
-    external: true
 
 volumes:
   postgres_data:
