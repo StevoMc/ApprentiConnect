@@ -3,6 +3,7 @@ version: "3.9"
 services:
   postgres:
     container_name: postgres
+    hostname: postgres
     image: postgres:16-alpine
     ports:
       - ${POSTGRES_PORT}:5432
@@ -12,13 +13,13 @@ services:
       - POSTGRES_DATABASE=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public&connect_timeout=30&pool_timeout=30&socket_timeout=30
     restart: always
     networks:
       - net
 
   nextjs:
     container_name: nextjs
+    hostname: nextjs
     build:
       context: .
       dockerfile: Dockerfile
@@ -32,6 +33,7 @@ services:
 
 networks:
   net:
+    driver: bridge
     external: true
 
 volumes:
