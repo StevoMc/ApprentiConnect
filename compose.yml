@@ -16,6 +16,8 @@ services:
     restart: always
     env_file:
       - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - net
 
@@ -32,6 +34,8 @@ services:
       - net
     env_file:
       - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
 
