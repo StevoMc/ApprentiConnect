@@ -5,7 +5,6 @@ services:
     container_name: postgres
     hostname: postgres
     image: postgres:16-alpine
-    network_mode: bridge
     ports:
       - ${POSTGRES_PORT}:5432
     volumes:
@@ -25,7 +24,6 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
-    network_mode: bridge
     ports:
       - 3000:3000
     env_file:
