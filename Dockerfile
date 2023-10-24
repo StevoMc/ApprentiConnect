@@ -5,6 +5,10 @@ WORKDIR /
 # COPY package.json and package-lock.json files
 COPY package*.json /
 
+# Install project dependencies using npm
+RUN npm ci
+RUN npm install
+
 # generated prisma files
 COPY prisma /prisma/
 
@@ -17,10 +21,6 @@ COPY .env /
 COPY tsconfig.json /
 
 RUN npm cache clean --force
-
-# Install project dependencies using npm
-RUN npm ci
-RUN npm install
 
 RUN npx prisma generate
 
