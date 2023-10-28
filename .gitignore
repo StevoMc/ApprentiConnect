@@ -40,5 +40,5 @@ next-env.d.ts
 .vscode
 
 /postgres
-
+/prisma/migrations/2*
 compose.yml.local
