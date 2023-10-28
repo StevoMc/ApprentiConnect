@@ -1,9 +1,9 @@
 FROM node:20-alpine
 
 WORKDIR /usr/src/app
-RUN apk --no-cache add --virtual builds-deps build-base python
-RUN npm config set python /usr/bin/python
-RUN npm i -g npm
+# RUN apk --no-cache add --virtual builds-deps build-base python
+# RUN npm config set python /usr/bin/python
+# RUN npm i -g npm
 
 
 # COPY package.json and package-lock.json files
@@ -14,8 +14,8 @@ RUN npm ci
 RUN npm install
 
 
-RUN npm rebuild bcrypt --build-from-source
-RUN apk del builds-deps
+# RUN npm rebuild bcrypt --build-from-source
+# RUN apk del builds-deps
 # RUN npm install --build-from-source=bcrypt
 # RUN npm rebuild bcrypt --build-from-source
 
