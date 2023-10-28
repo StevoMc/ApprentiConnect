@@ -1,32 +1,52 @@
-version: "3.8"
+version: "3.9"
 
 services:
   postgres:
     container_name: postgres
+    hostname: postgres
     image: postgres:16-alpine
     restart: always
     ports:
-      - ${POSTGRES_PORT}:5432
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    network_mode: bridge
+    networks:
+      default: {}
     environment:
       - POSTGRES_DATABASE=${POSTGRES_DB}
+      - PGUSER=${POSTGRES_USER}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  dev:
+
+  nextjs:
     container_name: nextjs
+    hostname: nextjs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    tty: true
+    stdin_open: true
     build:
       context: .
       dockerfile: Dockerfile
     restart: always
     ports:
       - 3000:3000
-    env_file:
-      - .env
-    network_mode: bridge
-    depends_on:
-      - postgres
+    networks:
+      default: {}
+
 
 volumes:
   postgres_data:
+
+networks:
+  default:
+    name: database
+    attachable: true

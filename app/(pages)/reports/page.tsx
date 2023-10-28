@@ -106,30 +106,28 @@ const ReportsPage = async () => {
         <h1>Reports</h1>
         {reports?.map((report) => {
           return (
-            <>
-              <Card
-                key={report.id}
-                className={
-                  report.published
-                    ? "bg-green-200 dark:bg-green-800/70"
-                    : "bg-red-200 dark:bg-red-800/70"
-                }
-              >
-                <CardHeader>
-                  <CardTitle>{report.title}</CardTitle>
-                  <CardDescription>{report.id}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>{report.content}</p>
-                </CardContent>
-                <CardFooter>
-                  <p>{report.authorId}</p>
-                  {/* <form action={setPublished(report?.id)}> */}
-                  <Checkbox checked={report?.published} />
-                  {/* </form> */}
-                </CardFooter>
-              </Card>
-            </>
+            <Card
+              key={report.id}
+              className={
+                report.published
+                  ? "bg-green-200 dark:bg-green-800/70"
+                  : "bg-red-200 dark:bg-red-800/70"
+              }
+            >
+              <CardHeader>
+                <CardTitle>{report.title}</CardTitle>
+                <CardDescription>{report.id}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>{report.content}</p>
+              </CardContent>
+              <CardFooter>
+                <p>{report.authorId}</p>
+                {/* <form action={setPublished(report?.id)}> */}
+                <Checkbox checked={report?.published} />
+                {/* </form> */}
+              </CardFooter>
+            </Card>
           );
         })}
       </section>

@@ -27,17 +27,27 @@ export const authOptions: NextAuthOptions = {
           .map((e) => e.join("="))
           .join("&") as string;
 
-        const user = await prisma.user.findUnique({
+        const emailLower = email.toLowerCase();
+        console.log(emailLower);
+
+        const user = await prisma?.user.findFirst({
           where: {
-            email: email.toLowerCase(),
+            email: emailLower,
           },
         });
-        if (!user?.password) return null;
-        // throw new Error("Invalid username or password");
+        if (!user?.password) {
+          throw new Error("Invalid username or password");
+        }
 
-        if (!(await compare(password, user?.password))) {
+        try {
+          const correct = await compare(password, user.password ?? "");
+
+          if (!correct) {
+            throw new Error("Invalid username or password");
+          }
+        } catch (e) {
+          console.error(e);
           return null;
-          // throw new Error("Invalid username or password");
         }
         return user;
       },

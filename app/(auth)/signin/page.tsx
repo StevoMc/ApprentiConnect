@@ -176,6 +176,7 @@ export default function SignInCard() {
                         )) || (
                           <Input
                             type="password"
+                            autoComplete="current-password"
                             className="border-0 bg-secondary text-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                             placeholder="Enter Password"
                             {...field}
