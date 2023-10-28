@@ -14,12 +14,14 @@ datasource db {
 }
 
 model Report {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   title     String
   content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
+  published Boolean  @default(false)
+  author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Account {

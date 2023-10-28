@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export { default } from "next-auth/middleware";
 
-export const config = { matcher: ["/dashboard"] };
+export const config = { matcher: ["/dashboard", "/reports"] };
 
 // export async function middleware(req: NextRequest) {
 //   // Get the pathname of the request (e.g. /, /protected)

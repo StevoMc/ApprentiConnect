@@ -9,16 +9,24 @@ services:
       - ${POSTGRES_PORT}:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - apprentice
+    network_mode: bridge
     environment:
       - POSTGRES_DATABASE=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  dev:
+    container_name: nextjs
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    network_mode: bridge
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
-
-networks:
-  apprentice:
-    external: true

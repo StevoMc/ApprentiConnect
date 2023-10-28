@@ -6,7 +6,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["vercel.com"],
+    domains: ["vercel.com", "api.dicebear.com"],
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false };
