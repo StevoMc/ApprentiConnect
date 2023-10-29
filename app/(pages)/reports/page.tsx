@@ -13,11 +13,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Checkbox from "./client_checkbox";
-import { getReports, addReport, setPublished } from "@/lib/server-actions";
+import {
+  getReports,
+  addReport,
+  setPublished,
+} from "@/lib/actions/server-actions";
 import { cn } from "@/lib/utils";
 import { Toggle } from "@/components/ui/toggle";
 import { Check, Cross, X } from "lucide-react";
 import TogglePublished from "./toggle-published";
+import ReportCard from "./report-card";
 
 const ReportsPage = async () => {
   const session = await getServerSession();
@@ -47,36 +52,7 @@ const ReportsPage = async () => {
         <h1>Overview</h1>
         <div className="flex flex-row flex-wrap items-center justify-center">
           {reports?.map((report) => {
-            return (
-              <Card
-                key={report.id}
-                className={cn(
-                  report.published
-                    ? "bg-green-200 dark:bg-green-800/70"
-                    : "bg-red-200 dark:bg-red-800/70",
-                  "m-2 w-fit",
-                )}
-              >
-                <CardHeader>
-                  <CardTitle>
-                    <div className="flex flex-row items-center justify-between">
-                      {report.title}
-                      <TogglePublished {...report} />
-                    </div>
-                  </CardTitle>
-                  <CardDescription>{report.id}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>{report.content}</p>
-                </CardContent>
-                <CardFooter>
-                  <p>{report.authorId}</p>
-                  {/* <form action={setPublished(report?.id)}> */}
-
-                  {/* </form> */}
-                </CardFooter>
-              </Card>
-            );
+            return <ReportCard key={report.id} {...report} />;
           })}
         </div>
       </section>

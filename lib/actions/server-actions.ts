@@ -1,10 +1,10 @@
-import { getServerSession } from "next-auth";
+"use server";
+
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache";
 
 export const addReport = async (formData: FormData) => {
-  "use server";
-
   const session = await getServerSession();
 
   const title = formData.get("title") as string;
@@ -28,11 +28,11 @@ export const addReport = async (formData: FormData) => {
   await prisma?.report.create({
     data,
   });
-  revalidateTag("reports");
+  revalidateTag("/reports");
+  return { success: true };
 };
 
 export const getReports = async () => {
-  "use server";
   const session = await getServerSession();
   const user = session?.user;
   if (!user) return;
@@ -56,7 +56,6 @@ export const getReports = async () => {
 };
 
 export const setPublished = async (id: number, state: boolean) => {
-  "use server";
   await prisma?.report.update({
     where: {
       id,
@@ -65,8 +64,6 @@ export const setPublished = async (id: number, state: boolean) => {
       published: state,
     },
   });
+  revalidateTag("/reports");
+  return { success: true };
 };
-
-const actions = { addReport, getReports, setPublished };
-
-export default actions;

@@ -1,4 +1,4 @@
-import { getReports } from "@/lib/server-actions";
+import { getReports } from "@/lib/actions/server-actions";
 import { columns } from "./colums";
 import { DataTable } from "./data-table";
 
