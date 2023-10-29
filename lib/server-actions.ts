@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
 
 export const addReport = async (formData: FormData) => {
   "use server";
@@ -24,11 +25,10 @@ export const addReport = async (formData: FormData) => {
 
   const data = { title, content, authorId };
 
-  console.log(data);
-
   await prisma?.report.create({
     data,
   });
+  revalidateTag("reports");
 };
 
 export const getReports = async () => {
@@ -48,18 +48,21 @@ export const getReports = async () => {
     where: {
       authorId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return reports;
 };
 
-export const setPublished = async (id: number) => {
+export const setPublished = async (id: number, state: boolean) => {
   "use server";
   await prisma?.report.update({
     where: {
-      id: id,
+      id,
     },
     data: {
-      published: true,
+      published: state,
     },
   });
 };

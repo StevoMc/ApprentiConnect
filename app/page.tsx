@@ -107,7 +107,11 @@ const features = [
   {
     title: "Overview",
     description: "Visualised and accessible for all users",
-    demo: <WebVitals />,
+    demo: (
+      <a className="h-full w-full" href="/reports-table">
+        <WebVitals />
+      </a>
+    ),
   },
   {
     title: "Users",
