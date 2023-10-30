@@ -6,6 +6,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { logger } from "@/lib/logger";
 import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
+import { User } from "@prisma/client";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -49,6 +51,9 @@ export const authOptions: NextAuthOptions = {
           console.error(e);
           return null;
         }
+
+        const { password: userPassword, ...sanitisedUser } = { ...user };
+
         return user;
       },
     }),
@@ -71,15 +76,31 @@ export const authOptions: NextAuthOptions = {
       logger.debug(code, metadata);
     },
   },
+  callbacks: {
+    session: ({ session, token }) => {
+      // console.log("Session Callback", { session, token });
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          name: token.firstname + " " + token.lastname,
+          image: token.picture,
+        },
+      };
+    },
+    jwt: ({ token, user }) => {
+      // console.log("JWT Callback", { token, user });
+      if (user) {
+        const u = user as unknown as User;
+        return {
+          ...token,
+          name: u.firstname + " " + u.lastname,
+        };
+      }
+      return token;
+    },
+  },
   session: { strategy: "jwt" },
-  // jwt: {
-  //   async encode({ secret, token }) {
-  //     return jwt.sign({ token }, secret);
-  //   },
-  //   async decode({ secret, token }) {
-  //     return jwt.verify(token, secret);
-  //   },
-  // },
 };
 
 export default authOptions;
