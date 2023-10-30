@@ -14,7 +14,7 @@ export const addReport = async (formData: FormData) => {
   if (!user || !title || !content) return;
 
   const authorId = await prisma?.user
-    .findFirst({
+    ?.findFirst({
       where: {
         email: user.email,
       },
@@ -25,7 +25,7 @@ export const addReport = async (formData: FormData) => {
 
   const data = { title, content, authorId };
 
-  await prisma?.report.create({
+  await prisma?.report?.create({
     data,
   });
   revalidateTag("/reports");
@@ -37,14 +37,14 @@ export const getReports = async () => {
   const user = session?.user;
   if (!user) return;
   const authorId = await prisma?.user
-    .findFirst({
+    ?.findFirst({
       where: {
         email: user.email,
       },
     })
     .then((e) => e?.id);
   if (!authorId) return;
-  const reports = await prisma?.report.findMany({
+  const reports = await prisma?.report?.findMany({
     where: {
       authorId,
     },
@@ -56,7 +56,7 @@ export const getReports = async () => {
 };
 
 export const setPublished = async (id: number, state: boolean) => {
-  await prisma?.report.update({
+  await prisma?.report?.update({
     where: {
       id,
     },
