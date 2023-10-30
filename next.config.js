@@ -2,6 +2,7 @@
 const nextConfig = {
   experimental: {
     serverActions: true,
+    serverComponentsExternalPackages: ["@prisma/client", "bcrypt"]
   },
   reactStrictMode: true,
   swcMinify: true,
