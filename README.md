@@ -1,10 +1,9 @@
 ## Introduction
-Then, install the dependencies with your package manager of choice:
+Then, install the dependencies with:
 
 ```bash
 npm i
-yarn
-pnpm i
+npm run dev
 ```
 
 ### Frameworks
