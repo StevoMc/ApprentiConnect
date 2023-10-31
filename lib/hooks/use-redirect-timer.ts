@@ -15,7 +15,7 @@ export default function useRedirectAfterSomeSeconds(
 			setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
 			if (secondsRemaining < 1) {
 				router.prefetch(redirectTo);
-				redirect(redirectTo);
+				router.replace(redirectTo);
 			}
 		}, 1000);
 

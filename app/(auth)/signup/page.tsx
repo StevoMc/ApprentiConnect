@@ -129,14 +129,14 @@ export default function SignUpCard() {
         progress: undefined,
       });
       form.reset();
-      router.push(`/signin`);
+      router.replace(`/signin`);
     } catch (e) {
       console.error(e);
     }
   };
   return (
     <>
-      <Card className="w-[32rem] max-w-full border-slate-700 bg-popover p-8">
+      <Card className="w-[32rem] border-ring/75 max-w-full bg-card p-8">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-between">
             <CardTitle className="text-2xl">Create an account</CardTitle>
@@ -162,7 +162,7 @@ export default function SignUpCard() {
                         <FormControl>
                           <Input
                             disabled={isLoading}
-                            className="border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
+                            className="border-0 bg-secondary text-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                             placeholder="Enter Your First Name"
                             {...field}
                           />
@@ -184,7 +184,7 @@ export default function SignUpCard() {
                         <FormControl>
                           <Input
                             disabled={isLoading}
-                            className="border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
+                            className="border-0 bg-secondary text-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                             placeholder="Enter Your Last Name"
                             {...field}
                           />
@@ -207,7 +207,7 @@ export default function SignUpCard() {
                       <FormControl>
                         <Input
                           disabled={isLoading}
-                          className="border-0 text-card-foreground focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
+                          className="border-0 bg-secondary text-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                           placeholder="Enter Your E-Mail"
                           {...field}
                         />
@@ -230,7 +230,9 @@ export default function SignUpCard() {
                         <Input
                           disabled={isLoading}
                           type="password"
-                          className="border-0 text-[--card] focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-card/20"
+                          autoComplete="new-password"
+                          required
+                          className="border-0 bg-secondary text-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                           placeholder="Enter Password"
                           {...field}
                         />
@@ -254,7 +256,7 @@ export default function SignUpCard() {
             <p>or</p>
             <Button
               onClick={() => {
-                router.push("/signin");
+                router.replace("/signin");
               }}
               variant={"outline"}
               className="w-full"

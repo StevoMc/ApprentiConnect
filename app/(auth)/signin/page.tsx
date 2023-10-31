@@ -99,9 +99,9 @@ export default function SignInCard() {
       draggable: true,
       progress: undefined,
     });
-    form.reset();
+    router.back();
     router.refresh();
-    router.push("/");
+    router.replace("/");
   };
 
   const handleFormFieldPasswordReset = (values: z.infer<typeof formSchema>) => {
@@ -114,7 +114,7 @@ export default function SignInCard() {
 
   return (
     <>
-      <Card className="w-[32rem] max-w-full p-8">
+      <Card className="w-[32rem] border-ring/75 max-w-full bg-card p-8">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-between">
             <CardTitle className="text-2xl">Welcome back!</CardTitle>
@@ -138,12 +138,16 @@ export default function SignInCard() {
                         {(isLoading && (
                           <Input
                             disabled
+                            required
+                            autoComplete="username"
                             className="bg-muted text-muted-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                             placeholder="Enter Your Email"
                             {...field}
                           />
                         )) || (
                           <Input
+                            required
+                            autoComplete="username"
                             className="border-0 bg-secondary text-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                             placeholder="Enter Your Email"
                             {...field}
@@ -168,14 +172,18 @@ export default function SignInCard() {
                         {(isLoading && (
                           <Input
                             disabled
+                            required
                             type="password"
+                            autoComplete="current-password"
                             className="border-0 bg-muted text-muted-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                             placeholder="Enter Password"
                             {...field}
                           />
                         )) || (
                           <Input
+                            required
                             type="password"
+                            autoComplete="current-password"
                             className="border-0 bg-secondary text-foreground focus-visible:ring-1 focus-visible:ring-offset-0"
                             placeholder="Enter Password"
                             {...field}
@@ -208,7 +216,7 @@ export default function SignInCard() {
             <p>or</p>
             <Button
               onClick={() => {
-                router.push("/signup");
+                router.replace("/signup");
               }}
               variant={"outline"}
               className="w-full"

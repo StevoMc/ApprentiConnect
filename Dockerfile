@@ -1,36 +1,15 @@
-FROM node:18-alpine
+FROM node:20
 
-WORKDIR /
+# Create app directory
+WORKDIR /app
 
-# COPY package.json and package-lock.json files
-COPY package*.json /
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+COPY prisma ./prisma/
 
-# Install project dependencies using npm
+# Install app dependencies
 RUN npm ci
-RUN npm install
+COPY . .
 
-# generated prisma files
-COPY prisma /prisma/
-
-COPY . /
-
-# COPY ENV variable
-COPY .env /
-
-# COPY tsconfig.json file
-COPY tsconfig.json /
-
-RUN npm cache clean --force
-
-RUN npx prisma generate
-
-RUN npx next telemetry disable
-
-# Build the application
-RUN npm run build
-
-# Expose the port your app runs on
 EXPOSE 3000
-
-# Start the application
-CMD ["npm", "run", "start"]
+CMD [ "npm", "run", "start" ]
