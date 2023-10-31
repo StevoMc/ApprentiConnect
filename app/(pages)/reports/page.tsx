@@ -28,6 +28,17 @@ const ReportsPage = async () => {
   const session = await getServerSession();
   const user = session?.user;
   const reports = await getReports();
+  const newDate = new Date();
+
+  const weekNumber = (d: Date) => {
+    const weekNumber = Math.ceil(
+      ((d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86400000 +
+        new Date(d.getFullYear(), 0, 1).getDay() +
+        1) /
+        7,
+    );
+    return "KW" + weekNumber;
+  };
 
   return (
     <>
@@ -35,8 +46,13 @@ const ReportsPage = async () => {
         <h1>Create a new Report</h1>
         <div className="w-fit">
           <form action={addReport} className="grid space-y-2">
-            <DatePicker />
-            <Input type="text" name="title" placeholder="Title" />
+            <DatePicker dateProp={newDate} />
+            <Input
+              autoCorrect="true"
+              type="text"
+              name="title"
+              placeholder="Title"
+            />
             <Input type="text" name="content" placeholder="Content" />
             <Input
               disabled
