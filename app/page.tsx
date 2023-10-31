@@ -6,8 +6,9 @@ import Image from "next/image";
 import { nFormatter } from "@/lib/utils";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import ReportIcon from "@/components/shared/icons/reports-icon";
-import ReportPDF from "./pdf/page";
+import ReportPDF from "./pdf/pdf";
 import { Button } from "@/components/ui/button";
+import ViewPDF from "./pdf/page";
 
 export default async function Home() {
   return (
@@ -125,7 +126,7 @@ const features = [
           href="/pdf"
         >
           <div className="relative h-40">
-            <ReportPDF />
+            <ViewPDF />
           </div>
         </a>
       </>
