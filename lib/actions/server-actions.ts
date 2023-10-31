@@ -1,17 +1,22 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { Report } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const addReport = async (formData: FormData) => {
   const session = await getServerSession();
+
+  const dateStr = formData.get("date")?.toString() ?? "";
+  const dateParsed = new Date(dateStr).toDateString();
+  const date = new Date(Date.parse(dateParsed) + 86400000) ?? null;
 
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
   const user = session?.user;
 
-  if (!user || !title || !content) return;
+  if (!user || !title || !content || !date) return;
 
   const authorId = await prisma?.user
     ?.findFirst({
@@ -23,12 +28,12 @@ export const addReport = async (formData: FormData) => {
 
   if (!authorId) return;
 
-  const data = { title, content, authorId };
+  const data = { title, content, authorId, date };
 
   await prisma?.report?.create({
     data,
   });
-  revalidateTag("/reports");
+  revalidatePath("/reports");
   return { success: true };
 };
 
@@ -64,6 +69,16 @@ export const setPublished = async (id: number, state: boolean) => {
       published: state,
     },
   });
-  revalidateTag("/reports");
+  revalidatePath("/reports");
   return { success: true };
+};
+
+export const removeReport = async (id: number): Promise<Report> => {
+  const report = await prisma?.report?.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath("/reports");
+  return report;
 };

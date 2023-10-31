@@ -1,10 +1,17 @@
-"use client";
+import ReportCard from "../report-card";
+import prisma from "@/lib/prisma";
 
-import { useParams } from "next/navigation";
-
-const ReportPage = () => {
-	const params = useParams();
-	return <>ReportId: {params?.reportId}</>;
+const ReportPage = async ({ params }: { params: { reportId: string } }) => {
+  if (!params?.reportId) return null;
+  const rep = await prisma?.report?.findUnique({
+    where: { id: Number(params?.reportId) },
+  });
+  if (!rep?.id) return null;
+  return (
+    <>
+      ReportId: {params?.reportId}
+      <ReportCard {...rep} />
+    </>
+  );
 };
-
 export default ReportPage;
