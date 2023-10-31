@@ -1,4 +1,3 @@
-import { useParams, usePathname } from "next/navigation";
 import ReportCard from "../report-card";
 import prisma from "@/lib/prisma";
 
