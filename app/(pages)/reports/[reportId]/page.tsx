@@ -14,5 +14,4 @@ const ReportPage = async ({ params }: { params: { reportId: string } }) => {
     </>
   );
 };
-
 export default ReportPage;
