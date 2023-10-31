@@ -62,11 +62,11 @@ export default async function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
           storageKey="theme"
         >
-          <ToastContainer theme="dark" />
+          <ToastContainer theme="light" />
           <div className="background fixed z-[-10] h-screen w-full" />
           {authModal}
           {/*  */}

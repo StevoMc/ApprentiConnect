@@ -10,7 +10,7 @@ import TogglePublished from "./toggle-published";
 import { cn } from "@/lib/utils";
 import { ActionTooltip } from "@/components/shared/action-tooltip";
 import RemoveReportButton from "./remove-report";
-import prisma from "@/lib/prisma"
+import prisma from "@/lib/prisma";
 
 type ReportCardProps = {
   id: number;
@@ -53,14 +53,12 @@ const ReportCard = async ({
         published
           ? "bg-green-200 dark:bg-green-800/70"
           : "bg-red-200 dark:bg-red-800/70",
-        "m-2 w-fit",
+        "m-1 grow w-full",
       )}
     >
       <CardHeader>
         <CardTitle>
           <div className="flex flex-row items-center justify-between">
-            {weekNumber(date)}
-            {" - "}
             {report.title}
             <div>
               <TogglePublished {...{ id, published }} />
@@ -68,20 +66,22 @@ const ReportCard = async ({
             </div>
           </div>
         </CardTitle>
-        <CardDescription>{date?.toLocaleDateString()}</CardDescription>
+        <CardDescription>
+          {date?.toLocaleDateString()} - {weekNumber(date)}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {Object.entries(report)?.map((e) =>
           !e ? null : (
             <p key={e[0]}>
-              {e[0]}
-              {": "}
+              {/* {e[0]}
+              {": "} */}
               {e[1]?.toString()}
             </p>
           ),
         )}
       </CardContent>
-      <CardFooter className="text-foreground/75">
+      {/* <CardFooter className="text-foreground/75">
         {typeof authorName === "string" ? (
           <p>Unknown Author</p>
         ) : (
@@ -92,7 +92,7 @@ const ReportCard = async ({
             <p>{authorName?.email}</p>
           </div>
         )}
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 };

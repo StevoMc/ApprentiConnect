@@ -30,9 +30,23 @@ export const addReport = async (formData: FormData) => {
 
   const data = { title, content, authorId, date };
 
-  await prisma?.report?.create({
-    data,
+  // If Report exists with the same day: append the data, else create new report.
+  const reportUpdated = await prisma?.report?.updateMany({
+    where: {
+      AND: [
+        { authorId: data?.authorId },
+        { title: data?.title },
+        { date: data?.date },
+      ],
+    },
+    data: { content },
   });
+
+  if (reportUpdated.count <= 0) {
+    const reportCreated = await prisma?.report?.create({
+      data,
+    });
+  }
   revalidatePath("/reports");
   return { success: true };
 };
@@ -51,10 +65,10 @@ export const getReports = async () => {
   if (!authorId) return;
   const reports = await prisma?.report?.findMany({
     where: {
-      authorId,
+      OR: [{ authorId }, { published: true }],
     },
     orderBy: {
-      createdAt: "desc",
+      date: "desc",
     },
   });
   return reports;
@@ -73,10 +87,21 @@ export const setPublished = async (id: number, state: boolean) => {
   return { success: true };
 };
 
-export const removeReport = async (id: number): Promise<Report> => {
+export const removeReport = async (id: number): Promise<Report | null> => {
+  const session = await getServerSession();
+
+  if (!session?.user?.email) return null;
+  const authorId = await prisma?.user
+    ?.findUnique({
+      where: { email: session?.user?.email },
+    })
+    .then((e) => e?.id);
+
+  if (!authorId) return null;
   const report = await prisma?.report?.delete({
     where: {
       id,
+      authorId,
     },
   });
   revalidatePath("/reports");

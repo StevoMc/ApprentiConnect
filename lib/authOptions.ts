@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
 
         const { password: userPassword, ...sanitisedUser } = { ...user };
 
-        return user;
+        return sanitisedUser;
       },
     }),
   ],
@@ -75,23 +75,25 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     session: ({ session, token }) => {
-      // console.log("Session Callback", { session, token });
+      console.log("Session Callback", { session, token });
       return {
         ...session,
         user: {
-          ...session.user,
-          name: token.firstname + " " + token.lastname,
-          image: token.picture,
+          ...session?.user,
+          name: token?.firstname + " " + token?.lastname,
+          image: token?.picture,
+          id: token?.id,
         },
       };
     },
     jwt: ({ token, user }) => {
-      // console.log("JWT Callback", { token, user });
+      console.log("JWT Callback", { token, user });
       if (user) {
-        const u = user as unknown as User;
+        const u = user as unknown as User | any;
         return {
           ...token,
-          name: u.firstname + " " + u.lastname,
+          name: u?.firstname + " " + u?.lastname,
+          id: u?.id,
         };
       }
       return token;

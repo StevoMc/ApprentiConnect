@@ -5,23 +5,11 @@ import { getServerSession } from "next-auth";
 import { DatePicker } from "@/components/shared/date-picker";
 import { Input } from "@/components/ui/input";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Checkbox from "./client_checkbox";
-import {
   getReports,
   addReport,
-  setPublished,
 } from "@/lib/actions/server-actions";
-import { cn } from "@/lib/utils";
-import { Toggle } from "@/components/ui/toggle";
-import { Check, Cross, X } from "lucide-react";
-import TogglePublished from "./toggle-published";
+
+import { ArrowUp} from "lucide-react";
 import ReportCard from "./report-card";
 
 const ReportsPage = async () => {
@@ -42,10 +30,13 @@ const ReportsPage = async () => {
 
   return (
     <>
-      <section className="flex flex-col items-center justify-start rounded-2xl bg-card p-12">
-        <h1>Create a new Report</h1>
-        <div className="w-fit">
-          <form action={addReport} className="grid space-y-2">
+      <section id="create" className="flex w-full flex-col items-center justify-start rounded-2xl bg-card px-2 py-4 text-lg md:px-2">
+        <h1 className="mb-4">Create a new Report</h1>
+        <div className="w-full grow">
+          <form
+            action={addReport}
+            className="mx-auto grid items-center space-y-2 align-middle"
+          >
             <DatePicker dateProp={newDate} />
             <Input
               autoCorrect="true"
@@ -64,14 +55,19 @@ const ReportsPage = async () => {
           </form>
         </div>
       </section>
-      <section className="justify-strech mt-6 flex flex-col items-center rounded-2xl bg-card p-12">
-        <h1>Overview</h1>
-        <div className="flex flex-row flex-wrap items-center justify-center">
+      <section className="justify-strech mt-4 flex flex-col items-center rounded-2xl bg-card md:p-2">
+        {/* <h1>Overview</h1> */}
+        <div className="w-full grow flex flex-row flex-wrap items-center justify-center">
           {reports?.map((report) => {
             return <ReportCard key={report.id} {...report} />;
           })}
         </div>
       </section>
+      <a href="#create">
+        <Button className="fixed bottom-4 right-4 h-12 w-12 rounded-full shadow-lg ">
+          <ArrowUp className="h-4 w-4" />
+        </Button>
+      </a>
     </>
   );
 };
