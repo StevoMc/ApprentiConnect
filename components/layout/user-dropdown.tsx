@@ -11,26 +11,21 @@ import { Button } from "../ui/button";
 import { v5 as uuid } from "uuid";
 
 export default function UserDropdown({ session }: { session: Session }) {
-  const { email, image } = session?.user || {};
+  const { email, image, name } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
   const router = useRouter();
 
   if (!email) return null;
+  if (!name) return null;
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left text-foreground">
       <Popover
         content={
           <div className="w-full rounded-md bg-card p-2 sm:w-56">
             <div className="p-2">
-              {session?.user?.name && (
-                <p className="truncate text-sm font-medium text-gray-900">
-                  {session?.user?.name}
-                </p>
-              )}
-              <p className="truncate text-sm text-gray-500">
-                {session?.user?.email}
-              </p>
+              {name && <p className="truncate text-sm font-medium ">{name}</p>}
+              <p className="truncate text-sm text-gray-500">{email}</p>
             </div>
 
             <button
@@ -54,9 +49,12 @@ export default function UserDropdown({ session }: { session: Session }) {
               <p className="text-sm">Settings</p>
             </button>
             <Button
-              variant={"outline"}
+              variant={"secondary"}
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-accent"
-              onClick={() => signOut()}
+              onClick={() => {
+                setOpenPopover(false);
+                router.replace("/signout");
+              }}
             >
               <LogOut className="h-4 w-4" />
               <p className="text-sm">Logout</p>

@@ -19,8 +19,10 @@ export const metadata = {
 
 export default async function RootLayout({
   children,
+  authModal,
 }: {
   children: React.ReactNode;
+  authModal: React.ReactNode;
 }) {
   return (
     <html
@@ -66,6 +68,7 @@ export default async function RootLayout({
         >
           <ToastContainer theme="dark" />
           <div className="background fixed z-[-10] h-screen w-full" />
+          {authModal}
           {/*  */}
           <Suspense fallback="Loading...">
             <AuthStatus />
