@@ -74,7 +74,7 @@ export default async function RootLayout({
             <AuthStatus />
             <Nav />
           </Suspense>
-          <main className="z-[-1] flex min-h-screen w-full flex-col items-center justify-center py-32">
+          <main className="z-[-1] flex min-h-screen w-full flex-col items-center justify-center">
             {children}
           </main>
           <Footer />

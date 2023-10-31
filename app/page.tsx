@@ -6,12 +6,14 @@ import Image from "next/image";
 import { nFormatter } from "@/lib/utils";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import ReportIcon from "@/components/shared/icons/reports-icon";
+import ReportPDF from "./pdf/page";
+import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   return (
     <>
       <div className="z-1 w-full max-w-xl px-2 md:py-12 xl:px-0">
-        <div className="flex items-center justify-center overflow-hidden">
+        <div className="mt-24 flex items-center justify-center overflow-hidden">
           <Image
             src="/android-chrome-384x384.png"
             alt="Logo"
@@ -111,6 +113,22 @@ const features = [
       <a className="h-full w-full" href="/reports-table">
         <WebVitals />
       </a>
+    ),
+  },
+  {
+    title: "PDF",
+    description: "Export data as PDF",
+    demo: (
+      <>
+        <a
+          className="flex h-full w-full items-center justify-center"
+          href="/pdf"
+        >
+          <div className="relative h-40">
+            <ReportPDF />
+          </div>
+        </a>
+      </>
     ),
   },
   {
