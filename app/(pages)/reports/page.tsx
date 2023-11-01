@@ -16,7 +16,7 @@ const ReportsPage = async () => {
   const session = await getServerSession();
   const user = session?.user;
   const reports = await getReports();
-  const newDate = new Date();
+  
 
   const weekNumber = (d: Date) => {
     const weekNumber = Math.ceil(
@@ -38,7 +38,7 @@ const ReportsPage = async () => {
             action={addReport}
             className="mx-auto grid items-center space-y-2 align-middle"
           >
-            <DatePicker dateProp={newDate} />
+            <DatePicker />
             <Input
               autoCorrect="true"
               type="text"
@@ -59,9 +59,9 @@ const ReportsPage = async () => {
       <section className="justify-strech mt-4 flex flex-col items-center rounded-2xl bg-card md:p-2">
         {/* <h1>Overview</h1> */}
         <div className="w-full grow flex flex-row flex-wrap items-center justify-center">
-          {reports?.map((report) => {
+          {reports && reports?.length > 0 ? reports?.map((report) => {
             return <ReportCard key={report.id} {...report} />;
-          })}
+          }) : <>No Reports</> }
         </div>
       </section>
       <a href="#create">
