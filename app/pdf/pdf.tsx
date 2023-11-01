@@ -17,6 +17,39 @@ Font.register({
   src: "https://github.com/matomo-org/travis-scripts/raw/master/fonts/Arial.ttf",
 });
 
+const columnWidths = ["30", "100%", "12%", "12%"];
+const defaultValues = [
+  { description: "\n", individualHours: "", totalHours: "" },
+  { description: "\n", individualHours: "", totalHours: "" },
+  { description: "\n", individualHours: "", totalHours: "" },
+  { description: "\n", individualHours: "", totalHours: "" },
+  { description: "\n", individualHours: "", totalHours: "" },
+];
+
+const activities = [
+  {
+    day: "Monday",
+    activities: defaultValues,
+  },
+  {
+    day: "Tuesday",
+    activities: defaultValues,
+  },
+  {
+    day: "Wednesday",
+    activities: defaultValues,
+  },
+  {
+    day: "Thursday",
+    activities: defaultValues,
+  },
+  {
+    day: "Friday",
+    activities: defaultValues,
+  },
+  // Add more days and activities as needed
+];
+
 const styles = StyleSheet.create({
   body: {
     paddingTop: 35,
@@ -151,6 +184,81 @@ const styles = StyleSheet.create({
   },
 });
 
+const table_styles = StyleSheet.create({
+  page: {
+    flexDirection: "column",
+    padding: "20",
+  },
+  table: {
+    display: "flex",
+    width: "100%",
+    borderStyle: "solid",
+    borderWidth: 0,
+    borderBottomWidth: 0,
+    fontSize: 10,
+  },
+  row: {
+    flexDirection: "row",
+    borderTop: "1 solid black",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "stretch",
+  },
+  row_no_border: {
+    flexDirection: "row",
+  },
+  row_rotated: {
+    width: columnWidths[0],
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderTop: 1,
+    borderRight: 1,
+    fontSize: 8,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  start: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    padding: 1,
+  },
+  center: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 1,
+  },
+  cell: {
+    width: columnWidths[0],
+    overflow: "hidden",
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderRight: 1,
+  },
+  cell2: {
+    width: columnWidths[1],
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderRight: 1,
+  },
+  cell3: {
+    width: columnWidths[2],
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderRight: 1,
+  },
+  cell4: {
+    width: columnWidths[3],
+    borderStyle: "solid",
+    borderColor: "#000",
+    borderRight: 0,
+  },
+});
 const aspectRatio = "portrait";
 
 const data = {
@@ -347,36 +455,59 @@ const PDF = () => (
       {attributes({ ...data })}
       <Text style={styles.text}>{"\n"}</Text>
       <Text style={styles.text}>{"\n"}</Text>
-      <View style={styles.table_lage}>
-        <View style={styles.tableRow_lage}>
-          <View style={styles.tableCol_lage}>
-            <Text style={styles.tableCell_lage}>Tag</Text>
+      <View style={table_styles.table}>
+        {/* HEAD */}
+        <View style={table_styles.row}>
+          <View style={[table_styles.cell, table_styles.center]}>
+            <Text>Tag</Text>
           </View>
-          <View style={styles.tableCol_lage}>
-            <Text style={styles.tableCell_lage}>
+          <View style={[table_styles.cell2, table_styles.center]}>
+            <Text>
+              {" "}
               Ausgeführte Arbeiten, Unterweisungen, Unterricht in der
               Berufsschule usw.
             </Text>
           </View>
-          <View style={styles.tableCol_lage}>
-            <Text style={styles.tableCell_lage}>Einzelstunden </Text>
+          <View style={[table_styles.cell3, table_styles.center]}>
+            <Text>Einzelstunden</Text>
           </View>
-          <View
-            style={{
-              flexGrow: 1,
-              borderStyle: "solid",
-              borderRight: 0,
-            }}
-          >
-            <Text style={styles.tableCell_lage}>Gesamtstunden </Text>
+          <View style={[table_styles.cell4, table_styles.center]}>
+            <Text>Gesamtstunden</Text>
           </View>
         </View>
-
-        {day("Montag")}
-        {day("Dienstag")}
-        {day("Mittwoch")}
-        {day("Donnerstag")}
-        {day("Freitag")}
+        {/* Content */}
+        {activities.map((dayData) => (
+          <View style={table_styles.row_no_border} key={dayData.day}>
+            <View
+              style={[
+                table_styles.row_rotated,
+                table_styles.center,
+                {
+                  height: "100%",
+                },
+              ]}
+            >
+              <Text style={[{ transform: "rotate(-90deg)" }]}>
+                {dayData.day}
+              </Text>
+            </View>
+            <View style={table_styles.cell2}>
+              {dayData.activities.map((activity) => (
+                <View style={table_styles.row} key={activity.description}>
+                  <View style={[table_styles.cell2, table_styles.start]}>
+                    <Text>{activity.description}</Text>
+                  </View>
+                  <View style={[table_styles.cell3, table_styles.center]}>
+                    <Text>{activity.individualHours}</Text>
+                  </View>
+                  <View style={[table_styles.cell4, table_styles.center]}>
+                    <Text>{activity.totalHours}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        ))}
       </View>
     </Page>
   </Document>
