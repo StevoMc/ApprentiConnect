@@ -14,7 +14,7 @@ import prisma from "@/lib/prisma";
 type ReportCardProps = {
   id: number;
   title: string;
-  content: string | null;
+  content: string[];
   published: boolean;
   authorId: string | null;
   createdAt: Date;
@@ -50,9 +50,9 @@ const ReportCard = async ({
     <Card
       className={cn(
         published
-          ? "bg-green-200 dark:bg-green-800/70"
-          : "bg-red-200 dark:bg-red-800/70",
-        "m-1 grow w-full",
+          ? "bg-green-200 dark:bg-green-800/50"
+          : "bg-red-200 dark:bg-red-800/50",
+        "m-1 w-full grow",
       )}
     >
       <CardHeader>
@@ -70,7 +70,7 @@ const ReportCard = async ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {Object.entries(report)?.map((e) =>
+        {Object.entries(report.content)?.map((e) =>
           !e ? null : (
             <p key={e[0]}>
               {/* {e[0]}
@@ -80,18 +80,17 @@ const ReportCard = async ({
           ),
         )}
       </CardContent>
-      {/* <CardFooter className="text-foreground/75">
+      <CardFooter className="text-foreground/60">
         {typeof authorName === "string" ? (
           <p>Unknown Author</p>
         ) : (
           <div className="flex flex-col">
             <p>
-              {authorName?.firstname} {authorName?.lastname}
+              {authorName?.firstname + " " + authorName?.lastname + " - " + authorName?.email}
             </p>
-            <p>{authorName?.email}</p>
           </div>
         )}
-      </CardFooter> */}
+      </CardFooter>
     </Card>
   );
 };

@@ -30,7 +30,7 @@ const ReportsPage = async () => {
 
   return (
     <>
-    <div className="p-2 mt-14 w-full max-w-[800px] h-full">
+    <div className="p-2 mt-14 w-full max-w-[600px] h-full">
       <section id="create" className="flex w-full flex-col items-center justify-start rounded-2xl bg-card px-2 py-4 text-lg md:px-2">
         <h1 className="mb-4">Create a new Report</h1>
         <div className="w-full grow">

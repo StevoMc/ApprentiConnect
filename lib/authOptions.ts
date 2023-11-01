@@ -27,7 +27,6 @@ export const authOptions: NextAuthOptions = {
           .join("&") as string;
 
         const emailLower = email.toLowerCase();
-        console.log(emailLower);
 
         const user = await prisma?.user.findFirst({
           where: {
@@ -58,7 +57,7 @@ export const authOptions: NextAuthOptions = {
   // pages
   pages: {
     signIn: "/signin",
-    signOut: "/signout",
+    signOut: "/",
     newUser: "/signup",
   },
   secret: process.env.NEXTAUTH_SECRET,
@@ -89,7 +88,7 @@ export const authOptions: NextAuthOptions = {
     jwt: ({ token, user }) => {
       console.log("JWT Callback", { token, user });
       if (user) {
-        const u = user as unknown as User | any;
+        const u = user as unknown as User;
         return {
           ...token,
           name: u?.firstname + " " + u?.lastname,
