@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import ReactPDF, {
+import { useEffect, useState } from "react";
+import {
   Page,
   Text,
   Image,
@@ -11,7 +11,6 @@ import ReactPDF, {
   Font,
   PDFViewer,
 } from "@react-pdf/renderer";
-import { cn } from "@/lib/utils";
 
 Font.register({
   family: "Arial",

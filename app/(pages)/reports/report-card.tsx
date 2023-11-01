@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import TogglePublished from "./toggle-published";
 import { cn } from "@/lib/utils";
-import { ActionTooltip } from "@/components/shared/action-tooltip";
 import RemoveReportButton from "./remove-report";
 import prisma from "@/lib/prisma";
 

@@ -2,7 +2,7 @@ import { ActionTooltip } from "@/components/shared/action-tooltip";
 import { Toggle } from "@/components/ui/toggle";
 import { setPublished } from "@/lib/actions/server-actions";
 import { Check, X } from "lucide-react";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 const TogglePublished = async ({
   id,

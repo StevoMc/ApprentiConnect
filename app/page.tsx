@@ -1,13 +1,9 @@
 import Card from "components/home/card";
-import { BuyMeACoffee, Github, Twitter } from "components/shared/icons";
+import { BuyMeACoffee, Github } from "components/shared/icons";
 import WebVitals from "components/home/web-vitals";
 import ComponentGrid from "components/home/component-grid";
 import Image from "next/image";
-import { nFormatter } from "@/lib/utils";
-import { ModeToggle } from "@/components/shared/mode-toggle";
 import ReportIcon from "@/components/shared/icons/reports-icon";
-import ReportPDF from "./pdf/pdf";
-import { Button } from "@/components/ui/button";
 import ViewPDF from "./pdf/page";
 
 export default async function Home() {
@@ -159,6 +155,22 @@ const features = [
             src={
               "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
             }
+          />
+        </a>
+      </>
+    ),
+  },
+  {
+    title: "Templates",
+    description: "Build your custom templates in our editor",
+    demo: (
+      <>
+        <a href="/editor">
+          <Image
+            src={"/assets/report-icon.png"}
+            alt={"Editor Logo"}
+            height="125"
+            width="125"
           />
         </a>
       </>
