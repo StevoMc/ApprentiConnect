@@ -15,10 +15,12 @@ import {
 import { useEffect } from "react";
 import { Input } from "../ui/input";
 
-export function DatePicker() {
+export function DatePicker({ dateProp }: { dateProp?: Date | null }) {
   const [date, setDate] = React.useState<Date>();
 
-  useEffect(() => {}, [date]);
+  useEffect(() => {
+    dateProp && setDate(dateProp);
+  }, [dateProp, date]);
 
   return (
     <Popover>
@@ -28,13 +30,14 @@ export function DatePicker() {
           className={cn(
             "w-full justify-start text-left font-normal",
             !date && "text-muted-foreground",
+            "shadow-md",
           )}
         >
           {date ? (
             <Input
               className="hidden"
               name={"date"}
-              defaultValue={date?.toString()}
+              defaultValue={date?.toDateString()}
             />
           ) : null}
           <CalendarIcon className="mr-2 h-4 w-4" />

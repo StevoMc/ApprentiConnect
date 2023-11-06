@@ -9,8 +9,8 @@ export const addReport = async (formData: FormData) => {
   const session = await getServerSession();
 
   const dateStr = formData.get("date")?.toString() ?? "";
-  const dateParsed = new Date(dateStr).toDateString();
-  const date = new Date(Date.parse(dateParsed) + 86400000) ?? null;
+  const date = new Date(dateStr)
+
 
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;

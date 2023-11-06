@@ -41,7 +41,7 @@ const ReportCard = async ({
         published
           ? "bg-green-200 dark:bg-green-800/50"
           : "bg-red-200 dark:bg-red-800/50",
-        "m-1",
+        "m-1 grow",
       )}
     >
       <CardHeader>

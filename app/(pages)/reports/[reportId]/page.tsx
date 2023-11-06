@@ -2,7 +2,7 @@ import { ArrowBigUp } from "lucide-react";
 import ReportCard from "../report-card";
 import prisma from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
-import ViewPDF from "@/app/pdf/pdfview";
+import ViewPDF from "@/app/(pages)/pdf/pdfview";
 import { getServerSession } from "next-auth";
 
 const ReportPage = async ({ params }: { params: { reportId: string } }) => {

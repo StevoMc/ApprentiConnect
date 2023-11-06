@@ -4,7 +4,7 @@ import WebVitals from "components/home/web-vitals";
 import ComponentGrid from "components/home/component-grid";
 import Image from "next/image";
 import ReportIcon from "@/components/shared/icons/reports-icon";
-import PDFPage from "./pdf/page";
+import PDFPage from "./(pages)/pdf/page";
 
 export default async function Home() {
   const features = [

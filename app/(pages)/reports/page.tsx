@@ -14,22 +14,12 @@ const ReportsPage = async () => {
   const user = session?.user;
   const reports = await getReports();
 
-  const weekNumber = (d: Date) => {
-    const weekNumber = Math.ceil(
-      ((d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86400000 +
-        new Date(d.getFullYear(), 0, 1).getDay() +
-        1) /
-        7,
-    );
-    return "KW" + weekNumber;
-  };
-
   return (
     <>
       <div className="mt-14 flex h-full flex-col items-center justify-start p-2">
         <section
           id="create"
-          className="flex max-w-[600px] flex-col items-center justify-start rounded-2xl bg-card px-2 py-4 text-lg md:px-2"
+          className="flex max-w-[600px] w-full flex-col items-center justify-start rounded-2xl bg-card px-2 py-4 text-lg md:px-2"
         >
           <h1 className="mb-4">Create a new Report</h1>
           <div className="w-full grow px-12 py-8">

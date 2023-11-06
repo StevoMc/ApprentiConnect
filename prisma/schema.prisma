@@ -55,19 +55,25 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  firstname     String?
-  lastname      String?
-  email         String?   @unique
-  username      String?   @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  reports       Report[]
-  sessions      Session[]
+  id              String    @id @default(cuid())
+  firstname       String?
+  lastname        String?
+  email           String?   @unique
+  username        String?   @unique
+  emailVerified   DateTime?
+  password        String?
+  image           String?
+  profession      String?
+  department      String?
+  professionField String?
+  company         String?
+  location        String?
+  entryDate       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  accounts        Account[]
+  reports         Report[]
+  sessions        Session[]
 }
 
 model VerificationToken {

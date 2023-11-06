@@ -51,6 +51,12 @@ type User = {
   emailVerified?: Date | null;
   password?: string | null;
   image?: string | null;
+  profession?: string | null;
+  department?: string | null;
+  professionField?: string | null;
+  company?: string | null;
+  location?: string | null;
+  entryDate?: Date | null;
   createdAt: Date;
   updatedAt: Date;
   accounts?: Account[];

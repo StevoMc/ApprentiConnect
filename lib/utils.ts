@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import ms from "ms";
- 
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -11,6 +11,16 @@ export const timeAgo = (timestamp: Date, timeOnly?: boolean): string => {
   return `${ms(Date.now() - new Date(timestamp).getTime())}${
     timeOnly ? "" : " ago"
   }`;
+};
+
+export const weekNumber = (d: Date) => {
+  const weekNumber = Math.ceil(
+    ((d.getTime() - new Date(d.getFullYear(), 0, 1).getTime()) / 86400000 +
+      new Date(d.getFullYear(), 0, 1).getDay() +
+      1) /
+      7,
+  );
+  return weekNumber;
 };
 
 export async function fetcher<JSON = any>(

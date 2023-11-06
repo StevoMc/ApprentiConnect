@@ -11,6 +11,7 @@ import {
   Font,
   PDFViewer,
 } from "@react-pdf/renderer";
+import { weekNumber } from "@/lib/utils";
 
 Font.register({
   family: "Arial",
@@ -195,7 +196,8 @@ const table_styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "flex-start",
-    paddingHorizontal: 1,
+    paddingHorizontal: 2,
+    fontSize: 9,
   },
   center: {
     display: "flex",
@@ -220,25 +222,25 @@ const table_styles = StyleSheet.create({
     width: columnWidths[2],
     borderStyle: "solid",
     borderColor: "#000",
-    borderRight: 1,
+    borderRight: 0.5,
   },
   cell4: {
     width: columnWidths[3],
   },
 });
 
-const data = {
-  kw: "31",
-  start: "04.09.23",
-  ende: "08.09.23",
-  jahr: "1",
+const defaultAttributes = {
+  kw: "KALENDERWOCHE",
+  start: "STARTDATUM",
+  ende: "ENDDATUM",
+  jahr: "JAHR",
   name: "NAME",
   beruf: "BERUF",
   abteilung: "ABTEILUNG",
   berufs_feld: "BERUFSFELD",
 };
 
-const header = ({ wochennr }: { wochennr: string }) => (
+const header = ({ wochennr }: { wochennr?: string }) => (
   <View
     style={{
       display: "flex",
@@ -249,7 +251,7 @@ const header = ({ wochennr }: { wochennr: string }) => (
   >
     <Text style={styles.heading}>{"Ausbildungsnachweis "}</Text>
     <Text style={styles.subheading}>{"über Ausbildungswoche Nr."}</Text>
-    <Text style={styles.week_number}>{wochennr ?? "12"}</Text>
+    <Text style={styles.week_number}>{wochennr ?? "NR"}</Text>
   </View>
 );
 
@@ -257,7 +259,7 @@ const attributes = ({
   kw,
   start,
   ende,
-  jahr,
+  jahre,
   name,
   beruf,
   abteilung,
@@ -266,7 +268,7 @@ const attributes = ({
   kw: string;
   start: string;
   ende: string;
-  jahr: string;
+  jahre: string | number;
   name: string;
   beruf: string;
   abteilung: string;
@@ -302,7 +304,7 @@ const attributes = ({
             <Text style={styles.tableCell}>{"Ausbildungsjahr"}</Text>
           </View>
           <View style={styles.tableCol_underlined_small}>
-            <Text style={styles.tableCell}>{jahr}</Text>
+            <Text style={styles.tableCell}>{jahre}</Text>
           </View>
         </View>
       </View>
@@ -365,7 +367,7 @@ const attributes = ({
   </View>
 );
 
-const innerRow = (
+const innerRow = (content: string) => (
   <View style={[table_styles.row, { borderTop: "0.5px solid #888" }]}>
     <View
       style={[
@@ -375,7 +377,7 @@ const innerRow = (
       ]}
     >
       {/* <Text>{activity?.description}</Text> */}
-      <Text>{""}</Text>
+      <Text>{content}</Text>
     </View>
     <View
       style={[
@@ -398,95 +400,113 @@ const dayRow = ({
   day: string;
   sollZeit: string;
   report: ReportType;
-}) => (
-  <View style={[table_styles.row_no_border]}>
-    <View
-      style={[
-        table_styles.row_rotated,
-        {
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          width: "24px",
-          padding: 0,
-          flexWrap: "nowrap",
-        },
-      ]}
-    >
-      <Text
+}) => {
+  return (
+    <View style={[table_styles.row_no_border]}>
+      <View
         style={[
+          table_styles.row_rotated,
           {
-            transform: "rotate(-90deg)",
-            width: "70px",
-            height: "12px",
-            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "24px",
+            padding: 0,
+            flexWrap: "nowrap",
           },
         ]}
       >
-        {day}
-      </Text>
-    </View>
-    <View style={[table_styles.cell2, { border: 0, width: "100%" }]}>
-      <View style={[table_styles.cell2, { borderTop: 1, width: "100%" }]}>
-        <View style={[table_styles.row, { borderTop: 0 }]}>
-          <View
-            style={[
-              table_styles.cell2,
-              table_styles.start,
-              { borderRight: "0.5px solid #888" },
-            ]}
-          >
-            {/* <Text>{activity?.description}</Text> */}
-            <Text>{""}</Text>
+        <Text
+          style={[
+            {
+              transform: "rotate(-90deg)",
+              width: "70px",
+              height: "12px",
+              textAlign: "center",
+            },
+          ]}
+        >
+          {day}
+        </Text>
+      </View>
+      <View style={[table_styles.cell2, { border: 0, width: "100%" }]}>
+        <View style={[table_styles.cell2, { borderTop: 1, width: "100%" }]}>
+          <View style={[table_styles.row, { borderTop: 0 }]}>
+            <View
+              style={[
+                table_styles.cell2,
+                table_styles.start,
+                { borderRight: "0.5px solid #888" },
+              ]}
+            >
+              {/* <Text>{activity?.description}</Text> */}
+              <Text>{report?.content[0]}</Text>
+            </View>
+            <View
+              style={[
+                table_styles.cell3,
+                table_styles.center,
+                { borderRight: "0", width: "43px" },
+              ]}
+            >
+              {/* <Text>{activity?.individualHours}</Text> */}
+              <Text>{""}</Text>
+            </View>
           </View>
-          <View
-            style={[
-              table_styles.cell3,
-              table_styles.center,
-              { borderRight: "0", width: "43px" },
-            ]}
-          >
-            {/* <Text>{activity?.individualHours}</Text> */}
-            <Text>{""}</Text>
-          </View>
+          {innerRow(report?.content[1])}
+          {innerRow(report?.content[2])}
+          {innerRow(report?.content[3])}
+          {innerRow(report?.content[4])}
+          {innerRow(report?.content[5])}
         </View>
-        {innerRow}
-        {innerRow}
-        {innerRow}
-        {innerRow}
+      </View>
+      <View
+        style={[
+          table_styles.cell4,
+          table_styles.center,
+          { borderRight: 0, borderTop: "1px solid black", width: "45.5px" },
+        ]}
+      >
+        {/* <Text>{activity?.totalHours}</Text> */}
+        <Text>{sollZeit}</Text>
       </View>
     </View>
-    <View
-      style={[
-        table_styles.cell4,
-        table_styles.center,
-        { borderRight: 0, borderTop: "1px solid black", width: "46px" },
-      ]}
-    >
-      {/* <Text>{activity?.totalHours}</Text> */}
-      <Text>{sollZeit}</Text>
-    </View>
-  </View>
-);
-
+  );
+};
 type PDFProps = {
-  wochennr: string;
+  wochennr?: string;
   profile: User;
   reports: ReportType[];
 };
 
 const PDF = ({ wochennr, profile, reports }: PDFProps) => {
   const day = [
+    "Sonntag",
     "Montag",
     "Dienstag",
     "Mittwoch",
     "Donnerstag",
     "Freitag",
     "Samstag",
-    "Sonntag",
   ];
+
+  const entryDate = profile?.entryDate || new Date();
+  const now = new Date();
+  const jahre = now.getFullYear() - entryDate.getFullYear() + 1;
+
+  const newAttributes = {
+    kw: weekNumber(reports[0]?.date).toString(),
+    start: reports[0]?.date.toLocaleDateString(),
+    ende: reports[reports.length - 1]?.date.toLocaleDateString(),
+    name: profile?.firstname + " " + profile?.lastname ?? "NAME",
+    jahre,
+    beruf: profile?.profession ?? "BERUF",
+    abteilung: profile?.department ?? "ABTEILUNG",
+    berufs_feld: profile?.professionField ?? "BERUFSFELD",
+  };
+
   return (
     <Document>
       <Page style={styles.body}>
@@ -496,8 +516,8 @@ const PDF = ({ wochennr, profile, reports }: PDFProps) => {
         {header({ wochennr })}
         <Text style={styles.text}>{"\n"}</Text>
         {attributes({
-          ...data,
-          name: profile.firstname + " " + profile.lastname,
+          ...defaultAttributes,
+          ...newAttributes,
         })}
         <Text style={styles.text}>{"\n"}</Text>
         <Text style={styles.text}>{"\n"}</Text>
@@ -521,9 +541,216 @@ const PDF = ({ wochennr, profile, reports }: PDFProps) => {
             </View>
           </View>
           {/* Content */}
-          {reports?.map((report) =>
-            dayRow({ day: day[report.date.getDay()], report, sollZeit: "7,5" }),
-          )}
+          {reports?.map((report) => {
+            return dayRow({
+              day: day[report.date.getDay()],
+              report,
+              sollZeit: "7,5",
+            });
+          })}
+        </View>
+        {/* Bemerkung */}
+        <View style={[table_styles.row_no_border]}>
+          <View style={[table_styles.row]}>
+            <View
+              style={[
+                table_styles.center,
+                {
+                  fontSize: 10,
+                  borderRight: 0,
+                  marginRight: "16px",
+                  width: "70px",
+                },
+              ]}
+            >
+              <Text>Bemerkung</Text>
+            </View>
+          </View>
+          <View style={[table_styles.cell2, { border: 0, width: "100%" }]}>
+            <View
+              style={[
+                table_styles.cell2,
+                { borderTop: 0, borderRight: 0, width: "100%" },
+              ]}
+            >
+              <View
+                style={[table_styles.row, { borderTop: 0, borderRight: 0 }]}
+              >
+                <View
+                  style={[
+                    table_styles.cell2,
+                    table_styles.start,
+                    { borderRight: "0.5px solid #888" },
+                  ]}
+                >
+                  <Text>{""}</Text>
+                </View>
+              </View>
+            </View>
+            <View style={[table_styles.cell2, { border: 0 }]}>
+              <View style={[table_styles.row]}>
+                <View
+                  style={[
+                    table_styles.cell2,
+                    table_styles.start,
+                    {
+                      borderRight: "0.5px solid #888",
+                      borderTop: "0.5px solid #888",
+                    },
+                  ]}
+                >
+                  <Text>{""}</Text>
+                </View>
+              </View>
+              <View style={[table_styles.row]}>
+                <View
+                  style={[
+                    table_styles.cell2,
+                    table_styles.start,
+                    {
+                      borderRight: "0.5px solid #888",
+                      borderTop: "0.5px solid #888",
+                    },
+                  ]}
+                >
+                  <Text>{""}</Text>
+                </View>
+              </View>
+              <View style={[table_styles.row]}>
+                <View
+                  style={[
+                    table_styles.cell2,
+                    table_styles.start,
+                    {
+                      borderRight: "0.5px solid #888",
+                      borderTop: "0.5px solid #888",
+                    },
+                  ]}
+                >
+                  <Text>{""}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={[table_styles.row, { borderTop: 0 }]}>
+            <View
+              style={[
+                table_styles.cell3,
+                table_styles.center,
+                { borderTop: "0", width: "55.5px", fontSize: 6 },
+                {
+                  borderRight: "0.5px solid #000",
+                },
+              ]}
+            >
+              <Text>{"Fehlstunden"}</Text>
+            </View>
+          </View>
+          <View
+            style={[
+              table_styles.cell4,
+              table_styles.center,
+              { borderRight: "0.5px #00000000", width: "55.5px" },
+            ]}
+          >
+            <Text>{""}</Text>
+          </View>
+        </View>
+
+        {/* Hinweis */}
+        <View style={[table_styles.row, { borderTop: 1, borderBottom: 1 }]}>
+          <View
+            style={[
+              table_styles.cell2,
+              {
+                borderRight: "0.5px solid #888",
+                width: "100%",
+                paddingVertical: "6px",
+              },
+            ]}
+          >
+            <View style={[table_styles.row, { borderTop: 0, borderRight: 0 }]}>
+              <View
+                style={[
+                  table_styles.cell2,
+                  table_styles.start,
+                  { fontSize: 10, border: 0 },
+                ]}
+              >
+                <Text>
+                  Dieser Ausbildungsnachweis wurde vom Auszubildenden selbst
+                  individuell angefertigt.
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={[table_styles.row, { borderTop: 0, width: "47.5px" }]}>
+            <View
+              style={[
+                table_styles.cell3,
+                {
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingHorizontal: 0.5,
+                  borderTop: "0",
+
+                  fontSize: 6,
+                  overflow: "hidden",
+                },
+              ]}
+            >
+              <Text>{"Ausbildungsestunden"}</Text>
+            </View>
+          </View>
+          <View
+            style={[
+              table_styles.cell4,
+              table_styles.center,
+              { borderRight: "0.5px #00000000", width: "47.5px", fontSize: 10 },
+            ]}
+          >
+            <Text>{"37,5"}</Text>
+          </View>
+        </View>
+
+        {/* Unterschrift */}
+        <View
+          style={[
+            table_styles.row,
+            { borderTop: 0, borderBottom: 1, height: 96, fontSize: 8 },
+          ]}
+        >
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                width: "50%",
+                borderRight: 1,
+              },
+            ]}
+          >
+            <Text>Ich bestätige die Richtigkeit der Angaben:</Text>
+            <Text>Datum</Text>
+            <Text>Auszubildende/r</Text>
+          </View>
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                width: "50%",
+              },
+            ]}
+          >
+            <Text>Kenntnis genommen:</Text>
+            <Text>Datum ____________________________</Text>
+            <Text>Ausbilder/in bzw. der/die mit der Ausbildung Beauftragt</Text>
+          </View>
         </View>
       </Page>
     </Document>
@@ -546,10 +773,15 @@ export const ReportPDF = ({
 
   if (!reports || !profile) return null;
 
+  const entryDate = profile.entryDate || new Date();
+  const diffInDays =
+    (reports[0].date.getTime() - entryDate.getTime()) / (1000 * 60 * 60 * 24);
+  const diffInWeeks = Math.round(diffInDays / 7 + 1).toString();
+
   return (
     <div className="absolut top-16 z-[60] flex h-full w-full grow flex-col overflow-hidden bg-white">
       <PDFViewer className="h-full w-full grow">
-        <PDF wochennr="10" reports={reports} profile={profile} />
+        <PDF wochennr={diffInWeeks} reports={reports} profile={profile} />
       </PDFViewer>
     </div>
   );
