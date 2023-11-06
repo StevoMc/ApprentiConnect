@@ -4,36 +4,9 @@ import WebVitals from "components/home/web-vitals";
 import ComponentGrid from "components/home/component-grid";
 import Image from "next/image";
 import ReportIcon from "@/components/shared/icons/reports-icon";
-import ViewPDF from "./pdf/pdfview";
-import { getServerSession } from "next-auth";
+import PDFPage from "./pdf/page";
 
 export default async function Home() {
-  const session = await getServerSession();
-  const user = session?.user;
-  const email = user?.email;
-
-  if (!session || !user || !email) return null;
-
-  const profile = await prisma?.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!profile) return null;
-
-  const authorId = profile.id;
-
-  if (!authorId) return null;
-
-  const reports = await prisma?.report?.findMany({
-    where: {
-      authorId,
-    },
-  });
-
-  if (!reports || reports.length <= 0) return null;
-
   const features = [
     {
       title: "Reports",
@@ -65,7 +38,7 @@ export default async function Home() {
             href="/pdf"
           >
             <div className="relative h-40">
-              <ViewPDF profile={profile} reports={reports} />
+              <PDFPage />
             </div>
           </a>
         </>
@@ -223,5 +196,3 @@ export default async function Home() {
     </>
   );
 }
-
-
