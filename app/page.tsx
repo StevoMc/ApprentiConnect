@@ -5,8 +5,141 @@ import ComponentGrid from "components/home/component-grid";
 import Image from "next/image";
 import ReportIcon from "@/components/shared/icons/reports-icon";
 import ViewPDF from "./pdf/pdfview";
+import { getServerSession } from "next-auth";
 
 export default async function Home() {
+  const session = await getServerSession();
+  const user = session?.user;
+  const email = user?.email;
+
+  if (!session || !user || !email) return null;
+
+  const profile = await prisma?.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!profile) return null;
+
+  const authorId = profile.id;
+
+  if (!authorId) return null;
+
+  const reports = await prisma?.report?.findMany({
+    where: {
+      authorId,
+    },
+  });
+
+  if (!reports || reports.length <= 0) return null;
+
+  const features = [
+    {
+      title: "Reports",
+      description: "Manage your Reports",
+      demo: (
+        <>
+          <a href="/reports">
+            <ReportIcon />
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Overview",
+      description: "Visualised and accessible for all users",
+      demo: (
+        <a className="h-full w-full" href="/reports-table">
+          <WebVitals />
+        </a>
+      ),
+    },
+    {
+      title: "PDF",
+      description: "Export data as PDF",
+      demo: (
+        <>
+          <a
+            className="flex h-full w-full items-center justify-center"
+            href="/pdf"
+          >
+            <div className="relative h-40">
+              <ViewPDF profile={profile} reports={reports} />
+            </div>
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Users",
+      description: "Share your Reports with other classmates",
+      demo: (
+        <>
+          <div className="h-36 w-36">
+            <BuyMeACoffee className="h-full w-full" />
+          </div>
+        </>
+      ),
+    },
+    {
+      title: "Dashboard",
+      description: "View all reports",
+      demo: (
+        <>
+          <a
+            className="flex h-full w-full items-center justify-center"
+            href="/dashboard"
+          >
+            <Image
+              alt=""
+              height="100"
+              width="100"
+              src={
+                "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
+              }
+            />
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Templates",
+      description: "Build your custom templates in our editor",
+      demo: (
+        <>
+          <a href="/editor">
+            <Image
+              src={"/assets/report-icon.png"}
+              alt={"Editor Logo"}
+              height="125"
+              width="125"
+            />
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Stay tuened",
+      description: "More coming soon",
+      demo: (
+        <>
+          <Image
+            alt=""
+            height="250"
+            width="250"
+            loading="eager"
+            unoptimized={true}
+            src={
+              "https://vercel.com/api/v1/integrations/assets/oac_aZtAZpDfT1lX3zrnWy7KT9VA/images/dccdabb5f5da8390659a21a32e56635b1345b515.png"
+            }
+          />
+        </>
+      ),
+      large: true,
+    },
+  ];
+
   return (
     <>
       <div className="z-1 w-full max-w-xl px-2 md:py-12 xl:px-0">
@@ -91,108 +224,4 @@ export default async function Home() {
   );
 }
 
-const features = [
-  {
-    title: "Reports",
-    description: "Manage your Reports",
-    demo: (
-      <>
-        <a href="/reports">
-          <ReportIcon />
-        </a>
-      </>
-    ),
-  },
-  {
-    title: "Overview",
-    description: "Visualised and accessible for all users",
-    demo: (
-      <a className="h-full w-full" href="/reports-table">
-        <WebVitals />
-      </a>
-    ),
-  },
-  {
-    title: "PDF",
-    description: "Export data as PDF",
-    demo: (
-      <>
-        <a
-          className="flex h-full w-full items-center justify-center"
-          href="/pdf"
-        >
-          <div className="relative h-40">
-            <ViewPDF />
-          </div>
-        </a>
-      </>
-    ),
-  },
-  {
-    title: "Users",
-    description: "Share your Reports with other classmates",
-    demo: (
-      <>
-        <div className="h-36 w-36">
-          <BuyMeACoffee className="h-full w-full" />
-        </div>
-      </>
-    ),
-  },
-  {
-    title: "Dashboard",
-    description: "View all reports",
-    demo: (
-      <>
-        <a
-          className="flex h-full w-full items-center justify-center"
-          href="/dashboard"
-        >
-          <Image
-            alt=""
-            height="100"
-            width="100"
-            src={
-              "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
-            }
-          />
-        </a>
-      </>
-    ),
-  },
-  {
-    title: "Templates",
-    description: "Build your custom templates in our editor",
-    demo: (
-      <>
-        <a href="/editor">
-          <Image
-            src={"/assets/report-icon.png"}
-            alt={"Editor Logo"}
-            height="125"
-            width="125"
-          />
-        </a>
-      </>
-    ),
-  },
-  {
-    title: "Stay tuened",
-    description: "More coming soon",
-    demo: (
-      <>
-        <Image
-          alt=""
-          height="250"
-          width="250"
-          loading="eager"
-          unoptimized={true}
-          src={
-            "https://vercel.com/api/v1/integrations/assets/oac_aZtAZpDfT1lX3zrnWy7KT9VA/images/dccdabb5f5da8390659a21a32e56635b1345b515.png"
-          }
-        />
-      </>
-    ),
-    large: true,
-  },
-];
+
