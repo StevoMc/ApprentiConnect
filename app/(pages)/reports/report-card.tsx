@@ -11,17 +11,6 @@ import { cn } from "@/lib/utils";
 import RemoveReportButton from "./remove-report";
 import prisma from "@/lib/prisma";
 
-type ReportCardProps = {
-  id: number;
-  title: string;
-  content: string[];
-  published: boolean;
-  authorId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  date: Date;
-};
-
 const ReportCard = async ({
   createdAt,
   updatedAt,
@@ -30,7 +19,7 @@ const ReportCard = async ({
   published,
   id,
   ...report
-}: ReportCardProps) => {
+}: ReportType) => {
   const weekNumber = (d: Date) => {
     if (!d) return;
     const weekNumber = Math.ceil(
@@ -52,7 +41,7 @@ const ReportCard = async ({
         published
           ? "bg-green-200 dark:bg-green-800/50"
           : "bg-red-200 dark:bg-red-800/50",
-        "m-1 w-full grow",
+        "m-1",
       )}
     >
       <CardHeader>

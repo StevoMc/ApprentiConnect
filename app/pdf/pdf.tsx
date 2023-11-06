@@ -17,38 +17,7 @@ Font.register({
   src: "https://github.com/matomo-org/travis-scripts/raw/master/fonts/Arial.ttf",
 });
 
-const columnWidths = ["30", "100%", "12%", "12%"];
-const defaultValues = [
-  { description: "\n", individualHours: "", totalHours: "" },
-  { description: "\n", individualHours: "", totalHours: "" },
-  { description: "\n", individualHours: "", totalHours: "" },
-  { description: "\n", individualHours: "", totalHours: "" },
-  { description: "\n", individualHours: "", totalHours: "" },
-];
-
-const activities = [
-  {
-    day: "Monday",
-    activities: defaultValues,
-  },
-  {
-    day: "Tuesday",
-    activities: defaultValues,
-  },
-  {
-    day: "Wednesday",
-    activities: defaultValues,
-  },
-  {
-    day: "Thursday",
-    activities: defaultValues,
-  },
-  {
-    day: "Friday",
-    activities: defaultValues,
-  },
-  // Add more days and activities as needed
-];
+const columnWidths = ["26px", "100%", "50px", "50px"];
 
 const styles = StyleSheet.create({
   body: {
@@ -147,7 +116,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Helvetica",
     width: "30px",
-    borderBottom: 1,
+    borderBottom: 0.5,
     marginHorizontal: 4,
   },
   underlined_number: {
@@ -194,18 +163,20 @@ const table_styles = StyleSheet.create({
     width: "100%",
     borderStyle: "solid",
     borderWidth: 0,
-    borderBottomWidth: 0,
+    borderBottomWidth: 1,
+    borderRightWidth: 0,
     fontSize: 10,
   },
   row: {
     flexDirection: "row",
-    borderTop: "1 solid black",
     display: "flex",
     justifyContent: "center",
     alignItems: "stretch",
+    minHeight: "12px",
   },
   row_no_border: {
     flexDirection: "row",
+    border: 0,
   },
   row_rotated: {
     width: columnWidths[0],
@@ -217,25 +188,24 @@ const table_styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "stretch",
   },
   start: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "flex-start",
-    padding: 1,
+    paddingHorizontal: 1,
   },
   center: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: 1,
+    paddingHorizontal: 1,
   },
   cell: {
     width: columnWidths[0],
-    overflow: "hidden",
     borderStyle: "solid",
     borderColor: "#000",
     borderRight: 1,
@@ -244,7 +214,7 @@ const table_styles = StyleSheet.create({
     width: columnWidths[1],
     borderStyle: "solid",
     borderColor: "#000",
-    borderRight: 1,
+    borderRight: 0.5,
   },
   cell3: {
     width: columnWidths[2],
@@ -254,12 +224,8 @@ const table_styles = StyleSheet.create({
   },
   cell4: {
     width: columnWidths[3],
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderRight: 0,
   },
 });
-const aspectRatio = "portrait";
 
 const data = {
   kw: "31",
@@ -272,7 +238,7 @@ const data = {
   berufs_feld: "BERUFSFELD",
 };
 
-const header = (
+const header = ({ wochennr }: { wochennr: string }) => (
   <View
     style={{
       display: "flex",
@@ -283,7 +249,7 @@ const header = (
   >
     <Text style={styles.heading}>{"Ausbildungsnachweis "}</Text>
     <Text style={styles.subheading}>{"über Ausbildungswoche Nr."}</Text>
-    <Text style={styles.week_number}>{"53"}</Text>
+    <Text style={styles.week_number}>{wochennr ?? "12"}</Text>
   </View>
 );
 
@@ -399,138 +365,191 @@ const attributes = ({
   </View>
 );
 
-const day = (day: string) => (
-  <View
-    style={{
-      flexDirection: "row",
-      borderStyle: "solid",
-      height: "10vh",
-      flexGrow: 0,
-      borderTop: 2,
-    }}
-  >
+const innerRow = (
+  <View style={[table_styles.row, { borderTop: "0.5px solid #888" }]}>
     <View
-      style={{
-        borderStyle: "solid",
-        borderRight: 1,
-        justifyContent: "center",
-      }}
+      style={[
+        table_styles.cell2,
+        table_styles.start,
+        { borderRight: "0.5px solid #888" },
+      ]}
     >
-      <Text
-        style={{
-          transform: "rotate(-90deg)",
-          height: 10,
-          textAlign: "center",
-        }}
-      >
-        {day}
-      </Text>
-    </View>
-    <View style={styles.tableCol_lage}>
-      <Text style={styles.tableCell_lage}>{"\n"}</Text>
-    </View>
-    <View style={styles.tableCol_lage}>
-      <Text style={styles.tableCell_lage}>{"\n"}</Text>
+      {/* <Text>{activity?.description}</Text> */}
+      <Text>{""}</Text>
     </View>
     <View
-      style={{
-        flexGrow: 1,
-        borderStyle: "solid",
-        borderRight: 0,
-      }}
+      style={[
+        table_styles.cell3,
+        table_styles.center,
+        { borderRight: "0", width: "43px" },
+      ]}
     >
-      <Text style={styles.tableCell_lage}>{"\n"}</Text>
+      {/* <Text>{activity?.individualHours}</Text> */}
+      <Text>{""}</Text>
     </View>
   </View>
 );
 
-const PDF = () => (
-  <Document>
-    <Page style={styles.body}>
-      {/*  eslint-disable-next-line jsx-a11y/alt-text */}
-      <Image src="/logo.png" style={styles.logo} />
-      <Text style={styles.text}>{"\n"}</Text>
-      {header}
-      <Text style={styles.text}>{"\n"}</Text>
-      {attributes({ ...data })}
-      <Text style={styles.text}>{"\n"}</Text>
-      <Text style={styles.text}>{"\n"}</Text>
-      <View style={table_styles.table}>
-        {/* HEAD */}
-        <View style={table_styles.row}>
-          <View style={[table_styles.cell, table_styles.center]}>
-            <Text>Tag</Text>
+const dayRow = ({
+  day,
+  report,
+  sollZeit,
+}: {
+  day: string;
+  sollZeit: string;
+  report: ReportType;
+}) => (
+  <View style={[table_styles.row_no_border]}>
+    <View
+      style={[
+        table_styles.row_rotated,
+        {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "24px",
+          padding: 0,
+          flexWrap: "nowrap",
+        },
+      ]}
+    >
+      <Text
+        style={[
+          {
+            transform: "rotate(-90deg)",
+            width: "70px",
+            height: "12px",
+            textAlign: "center",
+          },
+        ]}
+      >
+        {day}
+      </Text>
+    </View>
+    <View style={[table_styles.cell2, { border: 0, width: "100%" }]}>
+      <View style={[table_styles.cell2, { borderTop: 1, width: "100%" }]}>
+        <View style={[table_styles.row, { borderTop: 0 }]}>
+          <View
+            style={[
+              table_styles.cell2,
+              table_styles.start,
+              { borderRight: "0.5px solid #888" },
+            ]}
+          >
+            {/* <Text>{activity?.description}</Text> */}
+            <Text>{""}</Text>
           </View>
-          <View style={[table_styles.cell2, table_styles.center]}>
-            <Text>
-              {" "}
-              Ausgeführte Arbeiten, Unterweisungen, Unterricht in der
-              Berufsschule usw.
-            </Text>
-          </View>
-          <View style={[table_styles.cell3, table_styles.center]}>
-            <Text>Einzelstunden</Text>
-          </View>
-          <View style={[table_styles.cell4, table_styles.center]}>
-            <Text>Gesamtstunden</Text>
+          <View
+            style={[
+              table_styles.cell3,
+              table_styles.center,
+              { borderRight: "0", width: "43px" },
+            ]}
+          >
+            {/* <Text>{activity?.individualHours}</Text> */}
+            <Text>{""}</Text>
           </View>
         </View>
-        {/* Content */}
-        {activities.map((dayData) => (
-          <View style={table_styles.row_no_border} key={dayData.day}>
-            <View
-              style={[
-                table_styles.row_rotated,
-                table_styles.center,
-                {
-                  height: "100%",
-                },
-              ]}
-            >
-              <Text style={[{ transform: "rotate(-90deg)" }]}>
-                {dayData.day}
+        {innerRow}
+        {innerRow}
+        {innerRow}
+        {innerRow}
+      </View>
+    </View>
+    <View
+      style={[
+        table_styles.cell4,
+        table_styles.center,
+        { borderRight: 0, borderTop: "1px solid black", width: "46px" },
+      ]}
+    >
+      {/* <Text>{activity?.totalHours}</Text> */}
+      <Text>{sollZeit}</Text>
+    </View>
+  </View>
+);
+
+type PDFProps = {
+  wochennr: string;
+  profile: User;
+  reports: ReportType[];
+};
+
+const PDF = ({ wochennr, profile, reports }: PDFProps) => {
+  const day = [
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag",
+    "Sonntag",
+  ];
+  return (
+    <Document>
+      <Page style={styles.body}>
+        {/*  eslint-disable-next-line jsx-a11y/alt-text */}
+        <Image src="/logo.png" style={styles.logo} />
+        <Text style={styles.text}>{"\n"}</Text>
+        {header({ wochennr })}
+        <Text style={styles.text}>{"\n"}</Text>
+        {attributes({
+          ...data,
+          name: profile.firstname + " " + profile.lastname,
+        })}
+        <Text style={styles.text}>{"\n"}</Text>
+        <Text style={styles.text}>{"\n"}</Text>
+        <View style={[table_styles.table]}>
+          {/* HEAD */}
+          <View style={[table_styles.row, { borderTop: "1px solid black" }]}>
+            <View style={[table_styles.cell, table_styles.center]}>
+              <Text>Tag</Text>
+            </View>
+            <View style={[table_styles.cell2, table_styles.center]}>
+              <Text>
+                Ausgeführte Arbeiten, Unterweisungen, Unterricht in der
+                Berufsschule usw.
               </Text>
             </View>
-            <View style={table_styles.cell2}>
-              {dayData.activities.map((activity) => (
-                <View style={table_styles.row} key={activity.description}>
-                  <View style={[table_styles.cell2, table_styles.start]}>
-                    <Text>{activity.description}</Text>
-                  </View>
-                  <View style={[table_styles.cell3, table_styles.center]}>
-                    <Text>{activity.individualHours}</Text>
-                  </View>
-                  <View style={[table_styles.cell4, table_styles.center]}>
-                    <Text>{activity.totalHours}</Text>
-                  </View>
-                </View>
-              ))}
+            <View style={[table_styles.cell3, table_styles.center]}>
+              <Text>Einzelstunden</Text>
+            </View>
+            <View style={[table_styles.cell4, table_styles.center]}>
+              <Text>Gesamtstunden</Text>
             </View>
           </View>
-        ))}
-      </View>
-    </Page>
-  </Document>
-);
+          {/* Content */}
+          {reports?.map((report) =>
+            dayRow({ day: day[report.date.getDay()], report, sollZeit: "7,5" }),
+          )}
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 // Create Document Component
 export const ReportPDF = ({
   profile,
   reports,
 }: {
-  profile?: any;
-  reports?: any;
-}): JSX.Element => {
+  profile?: User;
+  reports?: ReportType[];
+}): JSX.Element | null => {
   const [client, setClient] = useState(false);
 
   useEffect(() => {
     setClient(true);
   }, []);
 
+  if (!reports || !profile) return null;
+
   return (
     <div className="absolut top-16 z-[60] flex h-full w-full grow flex-col overflow-hidden bg-white">
       <PDFViewer className="h-full w-full grow">
-        <PDF />
+        <PDF wochennr="10" reports={reports} profile={profile} />
       </PDFViewer>
     </div>
   );

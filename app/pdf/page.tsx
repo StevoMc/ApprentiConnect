@@ -1,21 +1,41 @@
-"use client";
+import { getServerSession } from "next-auth";
+import prisma from "@/lib/prisma";
+import ViewPDF from "./pdfview";
 
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+const PDFPage = async () => {
+  const session = await getServerSession();
+  const user = session?.user;
+  const email = user?.email;
 
-const ReportPDF = dynamic(() => import("./pdf"), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-});
+  if (!session || !user || !email) return null;
 
-const ViewPDF = () => {
-  const [client, setClient] = useState(false);
+  const profile = await prisma?.user.findUnique({
+    where: {
+      email,
+    },
+  });
 
-  useEffect(() => {
-    setClient(true);
-  }, []);
+  if (!profile) return null;
 
-  return <ReportPDF />;
+  const authorId = profile.id;
+
+  if (!authorId) return null;
+
+  const reports = await prisma?.report?.findMany({
+    where: {
+      authorId,
+    },
+  });
+
+  if (!reports || reports.length <= 0) return null;
+
+  return (
+    <>
+      <div className="mt-16 h-[100vh] w-full">
+        <ViewPDF profile={profile} reports={reports} />
+      </div>
+    </>
+  );
 };
 
-export default ViewPDF;
+export default PDFPage;

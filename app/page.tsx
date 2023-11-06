@@ -4,7 +4,7 @@ import WebVitals from "components/home/web-vitals";
 import ComponentGrid from "components/home/component-grid";
 import Image from "next/image";
 import ReportIcon from "@/components/shared/icons/reports-icon";
-import ViewPDF from "./pdf/page";
+import ViewPDF from "./pdf/pdfview";
 
 export default async function Home() {
   return (
