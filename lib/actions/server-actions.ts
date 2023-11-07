@@ -9,8 +9,8 @@ export const addReport = async (formData: FormData) => {
   const session = await getServerSession();
 
   const dateStr = formData.get("date")?.toString() ?? "";
-  const dateParsed = new Date(dateStr).toDateString();
-  const date = new Date(Date.parse(dateParsed) + 86400000) ?? null;
+  const date = new Date(dateStr)
+
 
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
@@ -28,11 +28,38 @@ export const addReport = async (formData: FormData) => {
 
   if (!authorId) return;
 
-  const data = { title, content, authorId, date };
+  const data = { title, content: [content], authorId, date };
 
-  await prisma?.report?.create({
+  // If Report exists with the same day: append the data, else create new report.
+  const reportExists = await prisma?.report?.findMany({
+    where: {
+      AND: [
+        { authorId: data?.authorId },
+        { title: data?.title },
+        { date: data?.date },
+      ],
+    },
+  });
+
+  if (reportExists.length > 0) {
+    const reportUpdated = await prisma?.report?.updateMany({
+      where: {
+        AND: [
+          { authorId: data?.authorId },
+          { title: data?.title },
+          { date: data?.date },
+        ],
+      },
+      data: { content: [...reportExists[0]?.content, content] },
+    });
+    revalidateTag("reports");
+    return { success: true };
+  }
+
+  const reportCreated = await prisma?.report?.create({
     data,
   });
+
   revalidatePath("/reports");
   return { success: true };
 };
@@ -51,10 +78,10 @@ export const getReports = async () => {
   if (!authorId) return;
   const reports = await prisma?.report?.findMany({
     where: {
-      authorId,
+      OR: [{ authorId }, { published: true }],
     },
     orderBy: {
-      createdAt: "desc",
+      date: "desc",
     },
   });
   return reports;
@@ -73,12 +100,28 @@ export const setPublished = async (id: number, state: boolean) => {
   return { success: true };
 };
 
-export const removeReport = async (id: number): Promise<Report> => {
-  const report = await prisma?.report?.delete({
-    where: {
-      id,
-    },
-  });
-  revalidatePath("/reports");
-  return report;
+export const removeReport = async (id: number): Promise<Report | null> => {
+  const session = await getServerSession();
+
+  if (!session?.user?.email) return null;
+  const authorId = await prisma?.user
+    ?.findUnique({
+      where: { email: session?.user?.email },
+    })
+    .then((e) => e?.id);
+  try {
+    if (!authorId) return null;
+    const report = await prisma?.report?.delete({
+      where: {
+        id,
+        authorId,
+      },
+    });
+    revalidatePath("/reports");
+    return report;
+  } catch (error) {
+    console.error(error);
+  }
+
+  return null;
 };

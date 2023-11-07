@@ -15,14 +15,12 @@ import {
 import { useEffect } from "react";
 import { Input } from "../ui/input";
 
-export function DatePicker({ dateProp }: { dateProp: Date }) {
+export function DatePicker({ dateProp }: { dateProp?: Date | null }) {
   const [date, setDate] = React.useState<Date>();
 
   useEffect(() => {
-    if (dateProp) {
-      setDate(dateProp);
-    }
-  }, [dateProp]);
+    dateProp && setDate(dateProp);
+  }, [dateProp, date]);
 
   return (
     <Popover>
@@ -30,12 +28,17 @@ export function DatePicker({ dateProp }: { dateProp: Date }) {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "w-full justify-start text-left font-normal",
             !date && "text-muted-foreground",
+            "shadow-md",
           )}
         >
           {date ? (
-            <Input className="hidden" name={"date"} value={date?.toString()} />
+            <Input
+              className="hidden"
+              name={"date"}
+              defaultValue={date?.toDateString()}
+            />
           ) : null}
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? format(date, "PPP") : <span>Pick a date</span>}

@@ -11,7 +11,7 @@ datasource db {
 model Report {
   id        Int      @id @default(autoincrement())
   title     String
-  content   String?
+  content   String[]
   published Boolean  @default(false)
   authorId  String?
   date      DateTime @default(now())
@@ -55,19 +55,25 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  firstname     String?
-  lastname      String?
-  email         String?   @unique
-  username      String?   @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  reports       Report[]
-  sessions      Session[]
+  id              String    @id @default(cuid())
+  firstname       String?
+  lastname        String?
+  email           String?   @unique
+  username        String?   @unique
+  emailVerified   DateTime?
+  password        String?
+  image           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  company         String?
+  department      String?
+  entryDate       DateTime?
+  location        String?
+  profession      String?
+  professionField String?
+  accounts        Account[]
+  reports         Report[]
+  sessions        Session[]
 }
 
 model VerificationToken {

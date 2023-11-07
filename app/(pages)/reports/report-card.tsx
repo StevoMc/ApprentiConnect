@@ -8,20 +8,8 @@ import {
 } from "@/components/ui/card";
 import TogglePublished from "./toggle-published";
 import { cn } from "@/lib/utils";
-import { ActionTooltip } from "@/components/shared/action-tooltip";
 import RemoveReportButton from "./remove-report";
-import prisma from "@/lib/prisma"
-
-type ReportCardProps = {
-  id: number;
-  title: string;
-  content: string | null;
-  published: boolean;
-  authorId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  date: Date;
-};
+import prisma from "@/lib/prisma";
 
 const ReportCard = async ({
   createdAt,
@@ -31,7 +19,7 @@ const ReportCard = async ({
   published,
   id,
   ...report
-}: ReportCardProps) => {
+}: ReportType) => {
   const weekNumber = (d: Date) => {
     if (!d) return;
     const weekNumber = Math.ceil(
@@ -51,16 +39,14 @@ const ReportCard = async ({
     <Card
       className={cn(
         published
-          ? "bg-green-200 dark:bg-green-800/70"
-          : "bg-red-200 dark:bg-red-800/70",
-        "m-2 w-fit",
+          ? "bg-green-200 dark:bg-green-800/50"
+          : "bg-red-200 dark:bg-red-800/50",
+        "m-1 grow",
       )}
     >
       <CardHeader>
         <CardTitle>
           <div className="flex flex-row items-center justify-between">
-            {weekNumber(date)}
-            {" - "}
             {report.title}
             <div>
               <TogglePublished {...{ id, published }} />
@@ -68,28 +54,29 @@ const ReportCard = async ({
             </div>
           </div>
         </CardTitle>
-        <CardDescription>{date?.toLocaleDateString()}</CardDescription>
+        <CardDescription>
+          {date?.toLocaleDateString()} - {weekNumber(date)}
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        {Object.entries(report)?.map((e) =>
+        {Object.entries(report.content)?.map((e) =>
           !e ? null : (
             <p key={e[0]}>
-              {e[0]}
-              {": "}
+              {/* {e[0]}
+              {": "} */}
               {e[1]?.toString()}
             </p>
           ),
         )}
       </CardContent>
-      <CardFooter className="text-foreground/75">
+      <CardFooter className="text-foreground/60">
         {typeof authorName === "string" ? (
           <p>Unknown Author</p>
         ) : (
           <div className="flex flex-col">
             <p>
-              {authorName?.firstname} {authorName?.lastname}
+              {authorName?.firstname + " " + authorName?.lastname + " - " + authorName?.email}
             </p>
-            <p>{authorName?.email}</p>
           </div>
         )}
       </CardFooter>

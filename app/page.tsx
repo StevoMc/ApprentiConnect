@@ -1,15 +1,118 @@
 import Card from "components/home/card";
-import { BuyMeACoffee, Github, Twitter } from "components/shared/icons";
+import { BuyMeACoffee, Github } from "components/shared/icons";
 import WebVitals from "components/home/web-vitals";
 import ComponentGrid from "components/home/component-grid";
 import Image from "next/image";
-import { nFormatter } from "@/lib/utils";
-import { ModeToggle } from "@/components/shared/mode-toggle";
 import ReportIcon from "@/components/shared/icons/reports-icon";
-import ReportPDF from "./pdf/page";
-import { Button } from "@/components/ui/button";
+import PDFPage from "./(pages)/pdf/page";
 
 export default async function Home() {
+  const features = [
+    {
+      title: "Reports",
+      description: "Manage your Reports",
+      demo: (
+        <>
+          <a href="/reports">
+            <ReportIcon />
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Overview",
+      description: "Visualised and accessible for all users",
+      demo: (
+        <a className="h-full w-full" href="/reports-table">
+          <WebVitals />
+        </a>
+      ),
+    },
+    {
+      title: "PDF",
+      description: "Export data as PDF",
+      demo: (
+        <>
+          <a
+            className="flex h-full w-full items-center justify-center"
+            href="/pdf"
+          >
+            <div className="relative h-40">
+              <PDFPage />
+            </div>
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Users",
+      description: "Share your Reports with other classmates",
+      demo: (
+        <>
+          <div className="h-36 w-36">
+            <BuyMeACoffee className="h-full w-full" />
+          </div>
+        </>
+      ),
+    },
+    {
+      title: "Dashboard",
+      description: "View all reports",
+      demo: (
+        <>
+          <a
+            className="flex h-full w-full items-center justify-center"
+            href="/dashboard"
+          >
+            <Image
+              alt=""
+              height="100"
+              width="100"
+              src={
+                "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
+              }
+            />
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Templates",
+      description: "Build your custom templates in our editor",
+      demo: (
+        <>
+          <a href="/editor">
+            <Image
+              src={"/assets/report-icon.png"}
+              alt={"Editor Logo"}
+              height="125"
+              width="125"
+            />
+          </a>
+        </>
+      ),
+    },
+    {
+      title: "Stay tuened",
+      description: "More coming soon",
+      demo: (
+        <>
+          <Image
+            alt=""
+            height="250"
+            width="250"
+            loading="eager"
+            unoptimized={true}
+            src={
+              "https://vercel.com/api/v1/integrations/assets/oac_aZtAZpDfT1lX3zrnWy7KT9VA/images/dccdabb5f5da8390659a21a32e56635b1345b515.png"
+            }
+          />
+        </>
+      ),
+      large: true,
+    },
+  ];
+
   return (
     <>
       <div className="z-1 w-full max-w-xl px-2 md:py-12 xl:px-0">
@@ -93,93 +196,3 @@ export default async function Home() {
     </>
   );
 }
-
-const features = [
-  {
-    title: "Reports",
-    description: "Manage your Reports",
-    demo: (
-      <>
-        <a href="/reports">
-          <ReportIcon />
-        </a>
-      </>
-    ),
-  },
-  {
-    title: "Overview",
-    description: "Visualised and accessible for all users",
-    demo: (
-      <a className="h-full w-full" href="/reports-table">
-        <WebVitals />
-      </a>
-    ),
-  },
-  {
-    title: "PDF",
-    description: "Export data as PDF",
-    demo: (
-      <>
-        <a
-          className="flex h-full w-full items-center justify-center"
-          href="/pdf"
-        >
-          <div className="relative h-40">
-            <ReportPDF />
-          </div>
-        </a>
-      </>
-    ),
-  },
-  {
-    title: "Users",
-    description: "Share your Reports with other classmates",
-    demo: (
-      <>
-        <div className="h-36 w-36">
-          <BuyMeACoffee className="h-full w-full" />
-        </div>
-      </>
-    ),
-  },
-  {
-    title: "Dashboard",
-    description: "View all reports",
-    demo: (
-      <>
-        <a
-          className="flex h-full w-full items-center justify-center"
-          href="/dashboard"
-        >
-          <Image
-            alt=""
-            height="100"
-            width="100"
-            src={
-              "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
-            }
-          />
-        </a>
-      </>
-    ),
-  },
-  {
-    title: "Stay tuened",
-    description: "More coming soon",
-    demo: (
-      <>
-        <Image
-          alt=""
-          height="250"
-          width="250"
-          loading="eager"
-          unoptimized={true}
-          src={
-            "https://vercel.com/api/v1/integrations/assets/oac_aZtAZpDfT1lX3zrnWy7KT9VA/images/dccdabb5f5da8390659a21a32e56635b1345b515.png"
-          }
-        />
-      </>
-    ),
-    large: true,
-  },
-];

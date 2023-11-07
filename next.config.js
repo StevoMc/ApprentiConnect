@@ -2,7 +2,7 @@
 const nextConfig = {
   experimental: {
     serverActions: true,
-    serverComponentsExternalPackages: ["@prisma/client", "bcrypt"]
+    serverComponentsExternalPackages: ["@prisma/client", "bcrypt"],
   },
   reactStrictMode: false,
   swcMinify: true,
@@ -11,6 +11,7 @@ const nextConfig = {
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false };
+    config.resolve.alias.canvas = false;
 
     return config;
   },
