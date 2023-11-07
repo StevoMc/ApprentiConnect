@@ -10,8 +10,8 @@ export default function SignOutCard() {
   const { secondsRemaining } = useRedirectAfterSomeSeconds("/", 5);
 
   useEffect(() => {
-    signOut({ redirect: false });
-  }, [])
+    if (secondsRemaining <= 1) signOut();
+  }, [secondsRemaining]);
 
   return (
     <>

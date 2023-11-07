@@ -62,11 +62,11 @@ export default async function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
           storageKey="theme"
         >
-          <ToastContainer theme="dark" />
+          <ToastContainer theme="light" />
           <div className="background fixed z-[-10] h-screen w-full" />
           {authModal}
           {/*  */}
@@ -74,7 +74,7 @@ export default async function RootLayout({
             <AuthStatus />
             <Nav />
           </Suspense>
-          <main className="z-[-1] flex min-h-screen w-full flex-col items-center justify-center py-32">
+          <main className="z-[-1] flex min-h-screen w-full flex-col items-center justify-center">
             {children}
           </main>
           <Footer />

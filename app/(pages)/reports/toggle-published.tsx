@@ -2,7 +2,7 @@ import { ActionTooltip } from "@/components/shared/action-tooltip";
 import { Toggle } from "@/components/ui/toggle";
 import { setPublished } from "@/lib/actions/server-actions";
 import { Check, X } from "lucide-react";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 const TogglePublished = async ({
   id,
@@ -13,7 +13,7 @@ const TogglePublished = async ({
 }) => {
   const handleClick = async () => {
     "use server";
-    await setPublished(id, !published).finally(() => revalidateTag("reports"));
+    await setPublished(id, !published).finally(() => revalidatePath("/reports"));
   };
 
   return (
@@ -28,7 +28,7 @@ const TogglePublished = async ({
             type="submit"
             aria-label="Toggle"
           >
-            {published ? (
+            {!published ? (
               <Check className="h-4 w-4" />
             ) : (
               <X className="h-4 w-4" />
