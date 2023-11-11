@@ -8,12 +8,16 @@ import { ThemeProvider } from "components/providers/theme-provider";
 import { ToastContainer } from "react-toastify";
 import AuthStatus from "@/components/auth-status";
 import { cn } from "@/lib/utils";
+import { Viewport } from "next";
 
 export const metadata = {
   title: "ApprentiConnect",
   description:
     "ApprentiConnect: Connecting apprentices with mentors for career guidance and knowledge sharing.",
   metadataBase: new URL("https://fs223.de"),
+};
+
+export const viewport: Viewport = {
   themeColor: "#FFF",
 };
 
