@@ -81,7 +81,7 @@ export const getReports = async () => {
       OR: [{ authorId }, { published: true }],
     },
     orderBy: {
-      date: "desc",
+      date: "asc",
     },
   });
   return reports;

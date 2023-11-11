@@ -32,8 +32,41 @@ const ReportCard = async ({
   };
 
   const authorName = authorId
-    ? await prisma?.user.findUnique({ where: { id: authorId } })
+    ? await prisma?.user?.findUnique({ where: { id: authorId } })
     : "";
+
+  return (
+    <div
+      className={cn(
+        published
+          ? "bg-green-200 dark:bg-green-800/50"
+          : "bg-red-200 dark:bg-red-800/50",
+        "m-1 grow rounded-sm px-4 py-2",
+      )}
+    >
+      <div className="flex flex-row items-center justify-between">
+        <span>
+          <p className="text-lg text-foreground/95">{report.title}</p>
+          <p className="text-xs text-foreground/60">
+            {date?.toLocaleDateString()} - {weekNumber(date)}
+          </p>
+        </span>
+        {/* <div className="">
+          <TogglePublished {...{ id, published }} />
+          <RemoveReportButton id={id} />
+        </div> */}
+      </div>
+      {Object.entries(report.content)?.map((e) =>
+        !e ? null : (
+          <p className="text-sm text-foreground/90" key={e[0]}>
+            {/* {e[0]}
+              {": "} */}
+            {e[1]?.toString()}
+          </p>
+        ),
+      )}
+    </div>
+  );
 
   return (
     <Card
@@ -69,7 +102,7 @@ const ReportCard = async ({
           ),
         )}
       </CardContent>
-      <CardFooter className="text-foreground/60">
+      {/* <CardFooter className="text-foreground/60">
         {typeof authorName === "string" ? (
           <p>Unknown Author</p>
         ) : (
@@ -79,7 +112,7 @@ const ReportCard = async ({
             </p>
           </div>
         )}
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 };
