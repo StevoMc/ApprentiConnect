@@ -2,7 +2,6 @@ import "./globals.css";
 import cx from "classnames";
 import { sfPro, inter } from "./fonts";
 import Nav from "components/layout/nav";
-import Footer from "components/layout/footer";
 import { Suspense } from "react";
 import { ThemeProvider } from "components/providers/theme-provider";
 import { ToastContainer } from "react-toastify";
@@ -81,7 +80,6 @@ export default async function RootLayout({
           <main className="z-[-1] flex min-h-screen w-full flex-col items-center justify-center">
             {children}
           </main>
-          <Footer />
         </ThemeProvider>
       </body>
     </html>

@@ -5,6 +5,7 @@ import ComponentGrid from "components/home/component-grid";
 import Image from "next/image";
 import ReportIcon from "@/components/shared/icons/reports-icon";
 import PDFPage from "./(pages)/pdf/page";
+import Footer from "components/layout/footer";
 
 export default async function Home() {
   const features = [
@@ -193,6 +194,7 @@ export default async function Home() {
           />
         ))}
       </div>
+      <Footer />
     </>
   );
 }
