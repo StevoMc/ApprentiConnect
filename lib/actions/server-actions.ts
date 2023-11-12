@@ -64,10 +64,10 @@ export const addReport = async (formData: FormData) => {
   return { success: true };
 };
 
-export const getReports = async () => {
+export const getReports = async (): Promise<ReportType[] | null> =>  {
   const session = await getServerSession();
   const user = session?.user;
-  if (!user) return;
+  if (!user) return null;
   const authorId = await prisma?.user
     ?.findFirst({
       where: {
@@ -75,7 +75,7 @@ export const getReports = async () => {
       },
     })
     .then((e) => e?.id);
-  if (!authorId) return;
+  if (!authorId) return null;
   const reports = await prisma?.report?.findMany({
     where: {
       OR: [{ authorId }, { published: true }],

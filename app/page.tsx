@@ -6,6 +6,7 @@ import Image from "next/image";
 import ReportIcon from "@/components/shared/icons/reports-icon";
 import PDFPage from "./(pages)/pdf/page";
 import Footer from "components/layout/footer";
+import { LayoutDashboard } from "lucide-react";
 
 export default async function Home() {
   const features = [
@@ -34,11 +35,8 @@ export default async function Home() {
       description: "Export data as PDF",
       demo: (
         <>
-          <a
-            className="flex h-full w-full items-center justify-center"
-            href="/pdf"
-          >
-            <div className="relative h-40">
+          <a className="h-full w-full flex items-center justify-center" href="/pdf">
+            <div className="h-46 relative w-28 ">
               <PDFPage />
             </div>
           </a>
@@ -65,14 +63,7 @@ export default async function Home() {
             className="flex h-full w-full items-center justify-center"
             href="/dashboard"
           >
-            <Image
-              alt=""
-              height="100"
-              width="100"
-              src={
-                "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
-              }
-            />
+            <LayoutDashboard className="h-36 w-36 opacity-70" />
           </a>
         </>
       ),
@@ -165,7 +156,7 @@ export default async function Home() {
             </svg>
             <p>Deploy to Vercel</p>
           </a> */}
-          <a
+          {/* <a
             className="flex max-w-fit cursor-pointer items-center justify-center space-x-2 rounded-full border border-foreground/30 bg-card px-5 py-2 text-sm text-foreground/80 shadow-md transition-colors hover:border-gray-800"
             target="_blank"
             rel="noopener noreferrer"
@@ -174,7 +165,7 @@ export default async function Home() {
             <p>
               <span className="hidden sm:inline-block">Star on</span> GitHub{" "}
             </p>
-          </a>
+          </a> */}
         </div>
       </div>
       <div className="my-10 grid w-full max-w-screen-xl animate-fade-up grid-cols-1 gap-5 px-5 md:grid-cols-3 xl:px-0">

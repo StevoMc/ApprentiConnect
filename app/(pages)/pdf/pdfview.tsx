@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
 const ReportPDF = dynamic(() => import("./pdf"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <p>Generating...</p>,
   ssr: false,
 });
 

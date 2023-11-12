@@ -21,11 +21,19 @@ const PDFPage = async () => {
 
   if (!authorId) return null;
 
+  const latestReportDate = await prisma?.report?.findMany({
+    where: {
+      authorId,
+    },
+    orderBy: [{ date: "desc" }],
+    take: 1,
+  });
+
   function calcWeekStart(): Date {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const difference = today.getDate() - dayOfWeek;
-    return new Date(today.setDate(difference));
+    const start = latestReportDate?.[0]?.date || new Date();
+    const dayOfWeek = start.getDay();
+    const difference = start.getDate() - dayOfWeek;
+    return new Date(start.setDate(difference));
   }
   function calcWeekEnd(): Date {
     const thisWeekStartDate = calcWeekStart();
@@ -36,7 +44,7 @@ const PDFPage = async () => {
     );
   }
   const thisWeekStart = calcWeekStart();
-  const thisWeekEnd = calcWeekEnd()
+  const thisWeekEnd = calcWeekEnd();
 
   const reports = await prisma?.report?.findMany({
     where: {
@@ -55,9 +63,7 @@ const PDFPage = async () => {
 
   return (
     <>
-      <div className="mt-16 h-[100vh] w-full">
-        <ViewPDF profile={profile} reports={reports} />
-      </div>
+      <ViewPDF profile={profile} reports={reports} />
     </>
   );
 };

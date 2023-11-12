@@ -41,30 +41,34 @@ const ReportCard = async ({
         published
           ? "bg-green-200 dark:bg-green-800/50"
           : "bg-red-200 dark:bg-red-800/50",
-        "m-1 grow rounded-sm px-4 py-2",
+        "m-1 h-full grow rounded-sm px-4 py-2 shadow-md",
       )}
     >
-      <div className="flex flex-row items-center justify-between">
-        <span>
-          <p className="text-lg text-foreground/95">{report.title}</p>
+      <div className="flex h-full flex-row items-start justify-between">
+        <span className="flex flex-col items-stretch justify-between">
+          <p className="pt-1 text-lg text-foreground/95">{report.title}</p>
           <p className="text-xs text-foreground/60">
             {date?.toLocaleDateString()} - {weekNumber(date)}
           </p>
-        </span>
-        {/* <div className="">
-          <TogglePublished {...{ id, published }} />
-          <RemoveReportButton id={id} />
-        </div> */}
-      </div>
-      {Object.entries(report.content)?.map((e) =>
-        !e ? null : (
-          <p className="text-sm text-foreground/90" key={e[0]}>
-            {/* {e[0]}
+          {Object.entries(report.content)?.map((e) =>
+            !e ? null : (
+              <p className="text-sm text-foreground/90" key={e[0]}>
+                {/* {e[0]}
               {": "} */}
-            {e[1]?.toString()}
-          </p>
-        ),
-      )}
+                {e[1]?.toString()}
+              </p>
+            ),
+          )}
+        </span>
+        <span>
+          <div className="scale-75">
+            <TogglePublished {...{ id, published }} />
+          </div>
+          <div className="scale-75">
+            <RemoveReportButton id={id} />
+          </div>
+        </span>
+      </div>
     </div>
   );
 
