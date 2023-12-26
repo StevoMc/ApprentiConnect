@@ -8,7 +8,7 @@ import { getReports, addReport } from "@/lib/actions/server-actions";
 
 import { ArrowUp } from "lucide-react";
 import ReportCard from "./report-card";
-
+import Editor from "@/components/editor/editor";
 const ReportsPage = async () => {
   const session = await getServerSession();
   const user = session?.user;
@@ -34,7 +34,7 @@ const ReportsPage = async () => {
                 name="title"
                 placeholder="Title"
               />
-              <Input type="text" name="content" placeholder="Content" />
+              <Editor />
               <Input
                 disabled
                 name="author"
