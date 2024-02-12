@@ -53,7 +53,7 @@
     "next": "^14.0.3",
     "next-auth": "4.24.5",
     "next-themes": "^0.2.1",
-    "pdfjs": "^2.5.2",
+    "pdfjs": "^2.5.3",
     "react": "^18.2.0",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
