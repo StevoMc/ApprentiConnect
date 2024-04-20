@@ -1,7 +1,10 @@
 "use client";
+
 const Details = (props) => {
-    return <div>{props.data}</div>;
-  };
-  
-  export default Details;
-  
+  // Convert the data prop to a string before rendering
+  const dataString = props.data.toString();
+
+  return <div>{dataString}</div>;
+};
+
+export default Details;

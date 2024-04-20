@@ -27,6 +27,6 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(dashboard)/dashboard/page.js", "app/(dashboard)/dashboard/page.js", "app/(dashboard)/dashboard/page.js"],
   "exclude": ["node_modules"]
 }

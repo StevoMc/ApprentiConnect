@@ -10,7 +10,10 @@ import {
   lastDayOfWeek,
   getWeek,
   addWeeks,
-  subWeeks
+  subWeeks,
+  endOfMonth,
+  startOfMonth,
+  isSameMonth  
 } from "date-fns";
 
 const Calendar = ({ showDetailsHandle }) => {
@@ -28,14 +31,11 @@ const Calendar = ({ showDetailsHandle }) => {
   };
 
   const changeWeekHandle = (btnType) => {
-    //console.log("current week", currentWeek);
     if (btnType === "prev") {
-      //console.log(subWeeks(currentMonth, 1));
       setCurrentMonth(subWeeks(currentMonth, 1));
       setCurrentWeek(getWeek(subWeeks(currentMonth, 1)));
     }
     if (btnType === "next") {
-      //console.log(addWeeks(currentMonth, 1));
       setCurrentMonth(addWeeks(currentMonth, 1));
       setCurrentWeek(getWeek(addWeeks(currentMonth, 1)));
     }
@@ -46,25 +46,38 @@ const Calendar = ({ showDetailsHandle }) => {
     showDetailsHandle(dayStr);
   };
 
+  // Function to get the week number of a given date
+  const getWeekNumber = (date) => {
+    const target = new Date(date.valueOf());
+    const dayNumber = (date.getDay() + 6) % 7;
+    target.setDate(target.getDate() - dayNumber + 3);
+    const firstThursday = target.valueOf();
+    target.setMonth(0, 1);
+    if (target.getDay() !== 4) {
+      target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+    }
+    return 1 + Math.ceil((firstThursday - target) / 604800000);
+  };
+
   const renderHeader = () => {
     const dateFormat = "MMM yyyy";
-    // console.log("selected day", selectedDate);
     return (
       <div className="header row flex-middle">
         <div className="col col-start">
-          {/* <div className="icon" onClick={() => changeMonthHandle("prev")}>
+          <div className="icon" onClick={() => changeMonthHandle("prev")}>
             prev month
-          </div> */}
+          </div>
         </div>
         <div className="col col-center">
           <span>{format(currentMonth, dateFormat)}</span>
         </div>
         <div className="col col-end">
-          {/* <div className="icon" onClick={() => changeMonthHandle("next")}>next month</div> */}
+          <div className="icon" onClick={() => changeMonthHandle("next")}>next month</div>
         </div>
       </div>
     );
   };
+
   const renderDays = () => {
     const dateFormat = "EEE";
     const days = [];
@@ -78,18 +91,24 @@ const Calendar = ({ showDetailsHandle }) => {
     }
     return <div className="days row">{days}</div>;
   };
+
   const renderCells = () => {
-    const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
-    const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
+    const startDate = startOfWeek(startOfMonth(currentMonth), { weekStartsOn: 1 });
+    const endDate = lastDayOfWeek(endOfMonth(currentMonth), { weekStartsOn: 1 });
     const dateFormat = "d";
+    const weekFormat = "W"; // Week number format
     const rows = [];
+  
     let days = [];
     let day = startDate;
     let formattedDate = "";
+  
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
+        const isCurrentMonth = isSameMonth(cloneDay, currentMonth);
+  
         days.push(
           <div
             className={`col cell ${
@@ -98,20 +117,30 @@ const Calendar = ({ showDetailsHandle }) => {
                 : isSameDay(day, selectedDate)
                 ? "selected"
                 : ""
-            }`}
+            } ${!isCurrentMonth ? "empty" : ""}`}
             key={day}
             onClick={() => {
               const dayStr = format(cloneDay, "ccc dd MMM yy");
               onDateClickHandle(cloneDay, dayStr);
             }}
           >
-            <span className="number">{formattedDate}</span>
-            <span className="bg">{formattedDate}</span>
+            {isCurrentMonth && (
+               <>
+               <span className="number">{formattedDate}</span>
+               <span className="bg">{formattedDate}</span>
+               {i === 0 && (
+                 <span className="week-number" >
+                   {getWeekNumber(day)}
+                 </span>
+               )}
+             </>
+            )}
           </div>
         );
+  
         day = addDays(day, 1);
       }
-
+  
       rows.push(
         <div className="row" key={day}>
           {days}
@@ -119,38 +148,22 @@ const Calendar = ({ showDetailsHandle }) => {
       );
       days = [];
     }
-    return <div className="body">{rows}</div>;
-  };
-  const renderFooter = () => {
+  
     return (
-      <div className="header row flex-middle">
-        <div className="col col-start">
-          <div className="icon" onClick={() => changeWeekHandle("prev")}>
-            prev week
-          </div>
-        </div>
-        <div>{currentWeek}</div>
-        <div className="col col-end" onClick={() => changeWeekHandle("next")}>
-          <div className="icon">next week</div>
-        </div>
+      <div className="body">
+        {rows}
       </div>
     );
   };
+  
+
   return (
     <div className="calendar">
       {renderHeader()}
       {renderDays()}
       {renderCells()}
-      {renderFooter()}
     </div>
   );
 };
 
 export default Calendar;
-/**
- * Header:
- * icon for switching to the previous month,
- * formatted date showing current month and year,
- * another icon for switching to next month
- * icons should also handle onClick events to change a month
- */

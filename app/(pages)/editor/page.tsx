@@ -1,9 +1,7 @@
-const EditorPage = () => {
-  return (
-    <>
-      <h1>EDITOR PANEL</h1>
-    </>
-  );
-};
+import Tiptap from "@/components/editor/editor"
 
-export default EditorPage;
+export default function Editor() {
+    return (
+         <Tiptap />
+    )
+}
