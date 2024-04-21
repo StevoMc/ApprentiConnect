@@ -22,7 +22,7 @@ export default async function Home() {
     },
     {
       title: "Overview",
-      description: "Visualised and accessible for all users",
+      description: "Visualized and accessible for all users",
       demo: (
         <a className="h-full w-full" href="/reports-table">
           <WebVitals />
