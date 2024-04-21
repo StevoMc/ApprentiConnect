@@ -1,9 +1,9 @@
-import Card from "components/home/card";
-import { BuyMeACoffee, Github } from "components/shared/icons";
-import WebVitals from "components/home/web-vitals";
-import ComponentGrid from "components/home/component-grid";
-import Image from "next/image";
 import ReportIcon from "@/components/shared/icons/reports-icon";
+import Card from "components/home/card";
+import ComponentGrid from "components/home/component-grid";
+import WebVitals from "components/home/web-vitals";
+import { BuyMeACoffee, Github } from "components/shared/icons";
+import Image from "next/image";
 import PDFPage from "./(pages)/pdf/page";
 
 export default async function Home() {
@@ -18,6 +18,7 @@ export default async function Home() {
           </a>
         </>
       ),
+      large: true,
     },
     {
       title: "Overview",
@@ -54,6 +55,7 @@ export default async function Home() {
           </div>
         </>
       ),
+      large: true,
     },
     {
       title: "Dashboard",
@@ -91,26 +93,7 @@ export default async function Home() {
           </a>
         </>
       ),
-    },
-    {
-      title: "Stay tuened",
-      description: "More coming soon",
-      demo: (
-        <>
-          <Image
-            alt=""
-            height="250"
-            width="250"
-            loading="eager"
-            unoptimized={true}
-            src={
-              "https://vercel.com/api/v1/integrations/assets/oac_aZtAZpDfT1lX3zrnWy7KT9VA/images/dccdabb5f5da8390659a21a32e56635b1345b515.png"
-            }
-          />
-        </>
-      ),
-      large: true,
-    },
+    }
   ];
 
   return (
