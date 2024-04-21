@@ -1,0 +1,100 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Information
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  username        String?   @unique
+  firstname       String?
+  lastname        String?
+  emailVerified   DateTime?
+  password        String?
+  image           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  company         String?
+  department      String?
+  entryDate       DateTime?
+  location        String?
+  profession      String?
+  professionField String?
+
+  // Relationships
+  accounts Account[]
+  reports  Report[]
+  sessions Session[]
+}
+
+// Accounts Information
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // User Relationship
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes and Uniques
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// Sessions Information
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // User Relationship
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([userId])
+}
+
+// Reports Information
+model Report {
+  id          Int      @id @default(autoincrement())
+  title       String
+  reportTasks Task[]   @relation("belongsToReport")
+  published   Boolean  @default(false)
+  authorId    String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  // User Relationship
+  author User? @relation(fields: [authorId], references: [id])
+}
+
+// Tasks Information
+model Task {
+  id          Int      @id @default(autoincrement())
+  description String
+  createdAt   DateTime @default(now())
+  report      Report   @relation("belongsToReport", fields: [reportId], references: [id], onDelete: Cascade)
+  reportId    Int
+}
