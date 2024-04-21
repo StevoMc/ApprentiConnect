@@ -56,43 +56,6 @@ export default async function Home() {
         </>
       ),
       large: true,
-    },
-    {
-      title: "Dashboard",
-      description: "View all reports",
-      demo: (
-        <>
-          <a
-            className="flex h-full w-full items-center justify-center"
-            href="/dashboard"
-          >
-            <Image
-              alt=""
-              height="100"
-              width="100"
-              src={
-                "https://vercel.com/api/www/avatar/01365977ca8e15b6918a4cae9165e08e3277bc33"
-              }
-            />
-          </a>
-        </>
-      ),
-    },
-    {
-      title: "Templates",
-      description: "Build your custom templates in our editor",
-      demo: (
-        <>
-          <a href="/editor">
-            <Image
-              src={"/assets/report-icon.png"}
-              alt={"Editor Logo"}
-              height="125"
-              width="125"
-            />
-          </a>
-        </>
-      ),
     }
   ];
 

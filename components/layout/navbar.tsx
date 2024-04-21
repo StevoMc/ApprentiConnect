@@ -1,14 +1,13 @@
 "use client";
 
+import useScroll from "@/lib/hooks/use-scroll";
+import { ActionTooltip } from "components/shared/action-tooltip";
+import { ModeToggle } from "components/shared/mode-toggle";
+import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import useScroll from "@/lib/hooks/use-scroll";
-import { useSignInModal } from "./sign-in-modal";
-import UserDropdown from "./user-dropdown";
-import { Session } from "next-auth";
-import { ModeToggle } from "components/shared/mode-toggle";
-import { ActionTooltip } from "components/shared/action-tooltip";
 import { useRouter } from "next/navigation";
+import UserDropdown from "./user-dropdown";
 
 export default function NavBar({ session }: { session: Session | null }) {
   // const { SignInModal, setShowSignInModal } = useSignInModal();
