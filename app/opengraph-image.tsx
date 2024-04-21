@@ -55,6 +55,6 @@ export default async function OG() {
           data: sfPro,
         },
       ],
-    },
+    }
   );
 }

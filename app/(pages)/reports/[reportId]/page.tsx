@@ -39,7 +39,7 @@ const ReportPage = async ({ params }: { params: { reportId: string } }) => {
 
         <div className="flex flex-col items-center justify-center ">
           <div className="h-[100vh] w-full">
-            <ViewPDF profile={profile} reports={...reports} />
+            <ViewPDF profile={profile} reports={reports} />
           </div>
           {reports.map((report) => {
             return (
