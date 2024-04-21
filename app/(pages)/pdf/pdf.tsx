@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  Page,
-  Text,
-  Image,
-  View,
-  Document,
-  StyleSheet,
-  Font,
-  PDFViewer,
-} from "@react-pdf/renderer";
 import { weekNumber } from "@/lib/utils";
+import {
+  Document,
+  Font,
+  Image,
+  PDFViewer,
+  Page,
+  StyleSheet,
+  Text,
+  View,
+} from "@react-pdf/renderer";
+import { useEffect, useState } from "react";
 
 Font.register({
   family: "Arial",
