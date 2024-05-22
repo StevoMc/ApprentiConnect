@@ -96,9 +96,7 @@ const Calendar = ({ showDetailsHandle }) => {
     const startDate = startOfWeek(startOfMonth(currentMonth), { weekStartsOn: 1 });
     const endDate = lastDayOfWeek(endOfMonth(currentMonth), { weekStartsOn: 1 });
     const dateFormat = "d";
-    const weekFormat = "W"; // Week number format
     const rows = [];
-  
     let days = [];
     let day = startDate;
     let formattedDate = "";
@@ -125,15 +123,13 @@ const Calendar = ({ showDetailsHandle }) => {
             }}
           >
             {isCurrentMonth && (
-               <>
-               <span className="number">{formattedDate}</span>
-               <span className="bg">{formattedDate}</span>
-               {i === 0 && (
-                 <span className="week-number" >
-                   {getWeekNumber(day)}
-                 </span>
-               )}
-             </>
+              <>
+                <span className="number">{formattedDate}</span>
+                <span className="bg">{formattedDate}</span>
+              </>
+            )}
+            {i === 0 && (
+              <span className="week-number">{getWeekNumber(day)}</span>
             )}
           </div>
         );
@@ -149,12 +145,10 @@ const Calendar = ({ showDetailsHandle }) => {
       days = [];
     }
   
-    return (
-      <div className="body">
-        {rows}
-      </div>
-    );
+    return <div className="body">{rows}</div>;
   };
+  
+  
   
 
   return (
